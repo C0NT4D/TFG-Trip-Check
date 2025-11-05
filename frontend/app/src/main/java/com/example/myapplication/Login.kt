@@ -11,9 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.json.JSONArray
-import java.net.HttpURLConnection
-import java.net.URL
 
 class Login : AppCompatActivity() {
 
@@ -45,76 +42,30 @@ class Login : AppCompatActivity() {
 
         // Texto para registrar un nuevo usuario
         txtRegistrar.setOnClickListener {
-            Toast.makeText(this, "Pantalla de registro próximamente", Toast.LENGTH_SHORT).show()
-            // Si ya tienes Registro.kt, puedes hacer:
-            // startActivity(Intent(this, Registro::class.java))
+            startActivity(Intent(this, Registro::class.java))
         }
     }
 
     private fun verificarUsuario(email: String, password: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val url = URL("http://10.0.2.2:8080/usuarios")
-                val connection = url.openConnection() as HttpURLConnection
-                connection.requestMethod = "GET"
-                connection.connectTimeout = 5000
-                connection.readTimeout = 5000
+                // Usamos el ApiService que ya está configurado
+                val usuarios = RetrofitClient.apiService.getUsuarios()
+                val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == password }
 
-                if (connection.responseCode == 200) {
-                    val result = connection.inputStream.bufferedReader().use { it.readText() }
-                    val jsonArray = JSONArray(result)
-                    var usuarioEncontrado = false
-
-                    for (i in 0 until jsonArray.length()) {
-                        val user = jsonArray.getJSONObject(i)
-                        val userEmail = user.getString("email")
-                        val userPass = user.getString("contraseña")
-
-                        if (userEmail == email && userPass == password) {
-                            usuarioEncontrado = true
-                            break
-                        }
-                    }
-
-                    withContext(Dispatchers.Main) {
-                        if (usuarioEncontrado) {
-                            Toast.makeText(
-                                this@Login,
-                                "✅ Inicio de sesión correcto",
-                                Toast.LENGTH_SHORT
-                            ).show()
-
-                            // Ejemplo: ir al menú principal
-                            val intent = Intent(this@Login, MainActivity::class.java)
-                            startActivity(intent)
-                            finish()
-                        } else {
-                            Toast.makeText(
-                                this@Login,
-                                "❌ Email o contraseña incorrectos",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
-                } else {
-                    withContext(Dispatchers.Main) {
-                        Toast.makeText(
-                            this@Login,
-                            "Error al conectar con el servidor",
-                            Toast.LENGTH_SHORT
-                        ).show()
+                withContext(Dispatchers.Main) {
+                    if (usuarioEncontrado != null) {
+                        Toast.makeText(this@Login, "✅ Inicio de sesión correcto", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this@Login, MainActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this@Login, "❌ Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                     }
                 }
-
-                connection.disconnect()
-
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        this@Login,
-                        "Error: ${e.message}",
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(this@Login, "Error: ${e.message}", Toast.LENGTH_LONG).show()
                 }
             }
         }
