@@ -1,8 +1,10 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.myapplication.BuildConfig // Importación crucial
@@ -54,6 +56,7 @@ class Registro : AppCompatActivity() {
         val editTextEmail = findViewById<EditText>(R.id.editTextEmail)
         val editTextContraseña = findViewById<EditText>(R.id.editTextContraseña)
         val buttonRegistro = findViewById<Button>(R.id.buttonRegistro)
+        val txtIrALogin = findViewById<TextView>(R.id.txtIrALogin)
 
         buttonRegistro.setOnClickListener {
             val nombre = editTextNombre.text.toString()
@@ -77,6 +80,10 @@ class Registro : AppCompatActivity() {
             } else {
                 Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
             }
+        }
+
+        txtIrALogin.setOnClickListener {
+            startActivity(Intent(this, Login::class.java))
         }
     }
 }
