@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_vuelos"
+        android:icon="@android:drawable/ic_menu_send" 
+        android:title="Vuelos" />
+
+    <item
+        android:id="@+id/navigation_hoteles"
+        android:icon="@android:drawable/ic_menu_compass" 
+        android:title="Hoteles" />
+
+    <item
+        android:id="@+id/navigation_reservas"
+        android:icon="@android:drawable/ic_menu_myplaces" 
+        android:title="Mis Viajes" />
+
+</menu>
