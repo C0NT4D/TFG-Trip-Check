@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="logotripcheck">Logo de Trip-Check</string>
+    <string name="inicia_sesion">Inicia sesión</string>
+    <string name="correo_electronico">Correo electrónico</string>
+    <string name="contrasena">Contraseña</string>
+    <string name="no_tienes_cuenta_registrate">¿No tienes cuenta? Regístrate</string>
 </resources>

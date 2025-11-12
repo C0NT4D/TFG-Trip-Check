@@ -8,19 +8,32 @@
     android:background="#EAF6FF"
     tools:context=".Login">
 
+    <!-- Logo Trip-Check -->
+    <ImageView
+        android:id="@+id/imgLogo"
+        android:layout_width="140dp"
+        android:layout_height="140dp"
+        android:src="@drawable/logotripcheck"
+        android:contentDescription="@string/logotripcheck"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="80dp"
+        android:adjustViewBounds="true" />
+
     <!-- Título -->
     <TextView
         android:id="@+id/txtTituloLogin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Inicia sesión"
+        android:text="@string/inicia_sesion"
         android:textColor="#003366"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgLogo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="120dp" />
+        android:layout_marginTop="40dp" />
 
     <!-- Campo de Email -->
     <EditText
@@ -29,13 +42,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="40dp"
-        android:hint="Correo electrónico"
+        android:hint="@string/correo_electronico"
         android:inputType="textEmailAddress"
         android:padding="12dp"
         android:background="@drawable/edittext_background"
         app:layout_constraintTop_toBottomOf="@id/txtTituloLogin"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="emailAddress" />
 
     <!-- Campo de Contraseña -->
     <EditText
@@ -44,13 +58,14 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="20dp"
-        android:hint="Contraseña"
+        android:hint="@string/contrasena"
         android:inputType="textPassword"
         android:padding="12dp"
         android:background="@drawable/edittext_background"
         app:layout_constraintTop_toBottomOf="@id/editEmail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        android:autofillHints="password" />
 
     <!-- Botón de Login -->
     <Button
@@ -60,7 +75,7 @@
         android:layout_marginHorizontal="32dp"
         android:layout_marginTop="30dp"
         android:backgroundTint="#0077B6"
-        android:text="Iniciar sesión"
+        android:text="@string/inicia_sesion"
         android:textColor="#FFFFFF"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/editPassword"
@@ -72,7 +87,7 @@
         android:id="@+id/txtRegistrar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="¿No tienes cuenta? Regístrate"
+        android:text="@string/no_tienes_cuenta_registrate"
         android:textColor="#0077B6"
         android:textStyle="bold"
         app:layout_constraintTop_toBottomOf="@id/btnLogin"
