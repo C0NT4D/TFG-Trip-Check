@@ -31,6 +31,11 @@
             android:name=".Registro"
             android:exported="false" />
 
+        <!-- Actividad de Vuelos -->
+        <activity
+            android:name=".Vuelos"
+            android:exported="false" />
+
         <!-- Otras pantallas -->
         <activity
             android:name=".MainActivity"

@@ -18,26 +18,42 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 
+// --- MODELOS DE DATOS ---
 data class Usuario(
     val nombre: String,
     val email: String,
-    @SerializedName("contraseña") // Asegura el nombre correcto en el JSON
+    @SerializedName("contraseña")
     val contrasena: String,
-    val rol: String = "cliente" // Corregido: El rol por defecto es 'cliente'
+    val rol: String = "cliente"
 )
 
+data class Vuelo(
+    val idVuelo: Long,
+    val origen: String,
+    val destino: String,
+    val fechaSalida: String, // Se tratará como String para simplicidad
+    val fechaLlegada: String,
+    val precio: Double,
+    val plazasDisponibles: Int
+)
+
+// --- INTERFAZ DE LA API ---
 interface ApiService {
     @POST("usuarios")
     suspend fun registrarUsuario(@Body usuario: Usuario): Usuario
 
     @GET("usuarios")
     suspend fun getUsuarios(): List<Usuario>
+
+    @GET("api/vuelos") // Endpoint del backend para vuelos
+    suspend fun getVuelos(): List<Vuelo>
 }
 
+// --- CLIENTE RETROFIT (SINGLETON) ---
 object RetrofitClient {
     private val retrofit by lazy {
         Retrofit.Builder()
-            .baseUrl(BuildConfig.BACKEND_URL) // Usando la URL desde BuildConfig
+            .baseUrl(BuildConfig.BACKEND_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -47,6 +63,7 @@ object RetrofitClient {
     }
 }
 
+// --- ACTIVIDAD DE REGISTRO ---
 class Registro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

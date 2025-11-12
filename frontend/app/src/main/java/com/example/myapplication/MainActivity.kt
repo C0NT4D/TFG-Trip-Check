@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -12,7 +13,6 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // Enlaces a los componentes de la interfaz de vuelos
         val editOrigen = findViewById<EditText>(R.id.editOrigen)
         val editDestino = findViewById<EditText>(R.id.editDestino)
         val editFechaIda = findViewById<EditText>(R.id.editFechaIda)
@@ -22,34 +22,34 @@ class MainActivity : AppCompatActivity() {
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
         btnBuscarVuelos.setOnClickListener {
-            // Lógica de ejemplo para el botón de búsqueda
-            val origen = editOrigen.text.toString()
-            val destino = editDestino.text.toString()
-            val fechaIda = editFechaIda.text.toString()
-            val fechaVuelta = editFechaVuelta.text.toString()
+            val origen = editOrigen.text.toString().trim()
+            val destino = editDestino.text.toString().trim()
+            val fechaIda = editFechaIda.text.toString().trim()
 
-            if (origen.isNotEmpty() && destino.isNotEmpty() && fechaIda.isNotEmpty()) {
-                Toast.makeText(this, "Buscando vuelos de $origen a $destino", Toast.LENGTH_SHORT).show()
+            if (origen.isNotEmpty() || destino.isNotEmpty() || fechaIda.isNotEmpty()) {
+                val intent = Intent(this, Vuelos::class.java).apply {
+                    putExtra("EXTRA_ORIGEN", origen)
+                    putExtra("EXTRA_DESTINO", destino)
+                    putExtra("EXTRA_FECHA_IDA", fechaIda)
+                }
+                startActivity(intent)
             } else {
-                Toast.makeText(this, "Por favor, rellena origen, destino y fecha de ida", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Introduce al menos un criterio de búsqueda", Toast.LENGTH_SHORT).show()
             }
         }
 
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_vuelos -> {
-                    Toast.makeText(this, "Vuelos seleccionado", Toast.LENGTH_SHORT).show()
-                    // Aquí iría la lógica para mostrar el fragmento de vuelos
+                    startActivity(Intent(this, Vuelos::class.java))
                     true
                 }
                 R.id.navigation_hoteles -> {
                     Toast.makeText(this, "Hoteles seleccionado", Toast.LENGTH_SHORT).show()
-                    // Aquí iría la lógica para mostrar el fragmento de hoteles
                     true
                 }
                 R.id.navigation_reservas -> {
                     Toast.makeText(this, "Mis Viajes seleccionado", Toast.LENGTH_SHORT).show()
-                    // Aquí iría la lógica para mostrar el fragmento de reservas
                     true
                 }
                 else -> false
