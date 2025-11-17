@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.EditText
@@ -79,7 +80,9 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_reservas -> {
-                    Toast.makeText(this, "Mis Viajes seleccionado", Toast.LENGTH_SHORT).show()
+                    // Abrir la actividad MisViajes
+                    val intent = Intent(this, MisViajes::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
