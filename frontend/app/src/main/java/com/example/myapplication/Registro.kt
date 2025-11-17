@@ -7,63 +7,12 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.myapplication.BuildConfig // Importación crucial
-import com.google.gson.annotations.SerializedName
+import com.example.myapplication.network.RetrofitClient
+import com.example.myapplication.network.Usuario
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
 
-// --- MODELOS DE DATOS ---
-data class Usuario(
-    val nombre: String,
-    val email: String,
-    @SerializedName("contraseña")
-    val contrasena: String,
-    val rol: String = "cliente"
-)
-
-data class Vuelo(
-    val idVuelo: Long,
-    val origen: String,
-    val destino: String,
-    val fechaSalida: String, // Se tratará como String para simplicidad
-    val fechaLlegada: String,
-    val precio: Double,
-    val plazasDisponibles: Int
-)
-
-// --- INTERFAZ DE LA API ---
-interface ApiService {
-    @POST("usuarios")
-    suspend fun registrarUsuario(@Body usuario: Usuario): Usuario
-
-    @GET("usuarios")
-    suspend fun getUsuarios(): List<Usuario>
-
-    @GET("api/vuelos") // Endpoint del backend para vuelos
-    suspend fun getVuelos(): List<Vuelo>
-}
-
-// --- CLIENTE RETROFIT (SINGLETON) ---
-object RetrofitClient {
-    private val retrofit by lazy {
-        Retrofit.Builder()
-            .baseUrl(BuildConfig.BACKEND_URL)
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    val apiService: ApiService by lazy {
-        retrofit.create(ApiService::class.java)
-    }
-}
-
-// --- ACTIVIDAD DE REGISTRO ---
 class Registro : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -76,16 +25,17 @@ class Registro : AppCompatActivity() {
         val txtIrALogin = findViewById<TextView>(R.id.txtIrALogin)
 
         buttonRegistro.setOnClickListener {
-            val nombre = editTextNombre.text.toString()
-            val email = editTextEmail.text.toString()
-            val contrasena = editTextContraseña.text.toString()
+            val nombre = editTextNombre.text.toString().trim()
+            val email = editTextEmail.text.toString().trim()
+            val contrasena = editTextContraseña.text.toString().trim()
 
             if (nombre.isNotEmpty() && email.isNotEmpty() && contrasena.isNotEmpty()) {
                 val nuevoUsuario = Usuario(nombre, email, contrasena)
                 CoroutineScope(Dispatchers.IO).launch {
                     try {
-                        val usuarioCreado = RetrofitClient.apiService.registrarUsuario(nuevoUsuario)
+                        val usuarioCreado = RetrofitClient.myBackendService.registrarUsuario(nuevoUsuario)
                         runOnUiThread {
+                            // Corregido: La variable se llama usuarioCreado
                             Toast.makeText(this@Registro, "Usuario registrado con éxito: ${usuarioCreado.nombre}", Toast.LENGTH_SHORT).show()
                         }
                     } catch (e: Exception) {

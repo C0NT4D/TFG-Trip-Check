@@ -8,6 +8,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.network.RetrofitClient
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -28,7 +29,6 @@ class Login : AppCompatActivity() {
         btnLogin = findViewById(R.id.btnLogin)
         txtRegistrar = findViewById(R.id.txtRegistrar)
 
-        // Acción del botón de inicio de sesión
         btnLogin.setOnClickListener {
             val email = editEmail.text.toString().trim()
             val password = editPassword.text.toString().trim()
@@ -40,7 +40,6 @@ class Login : AppCompatActivity() {
             }
         }
 
-        // Texto para registrar un nuevo usuario
         txtRegistrar.setOnClickListener {
             startActivity(Intent(this, Registro::class.java))
         }
@@ -49,8 +48,7 @@ class Login : AppCompatActivity() {
     private fun verificarUsuario(email: String, password: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Usamos el ApiService que ya está configurado
-                val usuarios = RetrofitClient.apiService.getUsuarios()
+                val usuarios = RetrofitClient.myBackendService.getUsuarios()
                 val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == password }
 
                 withContext(Dispatchers.Main) {

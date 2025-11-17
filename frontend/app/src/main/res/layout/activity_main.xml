@@ -40,7 +40,7 @@
                 android:id="@+id/editOrigen"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Origen"
+                android:hint="Origen (ej: MAD)"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="40dp"
                 android:padding="12dp"
@@ -53,7 +53,7 @@
                 android:id="@+id/editDestino"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Destino"
+                android:hint="Destino (ej: BCN)"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="20dp"
                 android:padding="12dp"
@@ -62,11 +62,11 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"/>
 
-            <EditText
+             <EditText
                 android:id="@+id/editFechaIda"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Fecha de ida"
+                android:hint="Fecha (YYYY-MM-DD)"
                 android:inputType="date"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="20dp"
@@ -80,8 +80,8 @@
                 android:id="@+id/editFechaVuelta"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:hint="Fecha de vuelta"
-                android:inputType="date"
+                android:hint="Fecha de vuelta (no funcional)"
+                android:focusable="false"
                 android:layout_marginHorizontal="32dp"
                 android:layout_marginTop="20dp"
                 android:padding="12dp"
