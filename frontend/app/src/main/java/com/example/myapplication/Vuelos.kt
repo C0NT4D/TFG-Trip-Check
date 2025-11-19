@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class Vuelos : AppCompatActivity() {
 
@@ -85,7 +86,6 @@ class Vuelos : AppCompatActivity() {
                         val vueloSeleccionado = vuelos[position]
                         val context = itemView.context
                         val intent = Intent(context, ReservaVueloActivity::class.java).apply {
-                            // Pasamos el objeto FlightData completo
                             putExtra("EXTRA_VUELO_DATA", vueloSeleccionado)
                         }
                         context.startActivity(intent)
@@ -103,7 +103,8 @@ class Vuelos : AppCompatActivity() {
             val vuelo = vuelos[position]
 
             holder.txtOrigenDestino.text = "${vuelo.origin} → ${vuelo.destination}"
-            holder.txtPrecio.text = String.format("%d €", vuelo.price)
+            val priceInEuros = vuelo.price / 100.0
+            holder.txtPrecio.text = String.format(Locale.getDefault(), "%.2f €", priceInEuros)
 
             val formatter = DateTimeFormatter.ofPattern("dd MMM yyyy, HH:mm")
             try {

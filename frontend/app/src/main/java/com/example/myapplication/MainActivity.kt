@@ -79,9 +79,6 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_reservas -> {
-                    // Abrir la actividad MisViajes
-                    val intent = Intent(this, MisViajes::class.java)
-                    startActivity(intent)
                     true
                 }
                 else -> false

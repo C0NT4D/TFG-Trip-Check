@@ -48,11 +48,26 @@
         android:textStyle="bold"
         tools:text="Precio: 120.50 €" />
 
-    <Button
-        android:id="@+id/btnConfirmarReserva"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
-        android:text="Confirmar Reserva" />
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btnVolver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginEnd="8dp"
+            android:text="Volver" />
+
+        <Button
+            android:id="@+id/btnConfirmarReserva"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Confirmar Reserva" />
+    </LinearLayout>
 
 </LinearLayout>

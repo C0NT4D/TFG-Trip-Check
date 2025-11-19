@@ -16,6 +16,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class ReservaVueloActivity : AppCompatActivity() {
 
@@ -41,6 +42,8 @@ class ReservaVueloActivity : AppCompatActivity() {
         setupUI(flightData!!)
 
         val btnConfirmarReserva = findViewById<Button>(R.id.btnConfirmarReserva)
+        val btnVolver = findViewById<Button>(R.id.btnVolver)
+
         btnConfirmarReserva.setOnClickListener {
             if (SessionManager.isLoggedIn(this)) {
                 confirmarReserva(flightData!!)
@@ -48,6 +51,10 @@ class ReservaVueloActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debes iniciar sesión para poder reservar", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this, Login::class.java))
             }
+        }
+
+        btnVolver.setOnClickListener {
+            finish() // Cierra la actividad y vuelve a la anterior (Vuelos)
         }
     }
 
@@ -59,7 +66,10 @@ class ReservaVueloActivity : AppCompatActivity() {
 
         txtVueloOrigenDestino.text = "${vuelo.origin} → ${vuelo.destination}"
         txtVueloAerolinea.text = "Aerolínea: ${vuelo.airline}"
-        txtVueloPrecio.text = "Precio: ${vuelo.price} €"
+
+        // Corregir la visualización del precio
+        val priceInEuros = vuelo.price / 100.0
+        txtVueloPrecio.text = String.format(Locale.getDefault(), "Precio: %.2f €", priceInEuros)
 
         try {
             val fechaSalida = ZonedDateTime.parse(vuelo.departureAt)
@@ -75,29 +85,26 @@ class ReservaVueloActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // --- SOLUCIÓN DEFINITIVA PARA EL ERROR 500 ---
 
-                // 1. Usar ZonedDateTime para parsear la fecha de la API (que incluye zona horaria 'Z')
                 val departureZonedDateTime = ZonedDateTime.parse(vueloData.departureAt)
-
-                // 2. Si la fecha de regreso está vacía, usamos la de salida como reemplazo.
                 val arrivalString = if (vueloData.returnAt.isNullOrEmpty()) vueloData.departureAt else vueloData.returnAt
                 val arrivalZonedDateTime = ZonedDateTime.parse(arrivalString)
 
-                // 3. Convertir a LocalDateTime para quitar la zona horaria
                 val departureLocalDateTime = departureZonedDateTime.toLocalDateTime()
                 val arrivalLocalDateTime = arrivalZonedDateTime.toLocalDateTime()
 
-                // 4. Formatear a String en formato ISO, que el backend entiende por defecto.
                 val fechaSalidaBackend = departureLocalDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                 val fechaLlegadaBackend = arrivalLocalDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+                // Corregir el precio al enviar al backend
+                val priceInEuros = vueloData.price / 100.0
 
                 val nuevoVuelo = Vuelo(
                     origen = vueloData.origin,
                     destino = vueloData.destination,
                     fechaSalida = fechaSalidaBackend,
                     fechaLlegada = fechaLlegadaBackend,
-                    precio = vueloData.price.toDouble(),
+                    precio = priceInEuros, // <- Precio corregido
                     plazasDisponibles = 50
                 )
 
@@ -117,6 +124,9 @@ class ReservaVueloActivity : AppCompatActivity() {
                     RetrofitClient.myBackendService.addReserva(nuevaReserva)
 
                     Toast.makeText(this@ReservaVueloActivity, "¡Reserva confirmada con éxito!", Toast.LENGTH_LONG).show()
+                    val intent = Intent(this@ReservaVueloActivity, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    startActivity(intent)
                     finish()
                 } else {
                     Toast.makeText(this@ReservaVueloActivity, "Error al guardar el vuelo.", Toast.LENGTH_SHORT).show()
