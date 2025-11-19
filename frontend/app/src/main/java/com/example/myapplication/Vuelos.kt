@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -21,7 +22,7 @@ import java.time.format.DateTimeFormatter
 class Vuelos : AppCompatActivity() {
 
     private lateinit var recyclerView: RecyclerView
-    private lateinit var vuelosAdapter: VuelosAdapter // Ahora esta referencia es correcta
+    private lateinit var vuelosAdapter: VuelosAdapter
     private val token = "ae5a1eb3f8e274fedb604ed83f9516aa"
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,20 +52,16 @@ class Vuelos : AppCompatActivity() {
     private fun cargarVuelos(origen: String, destino: String, fecha: String?) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Pasamos el token como primer argumento, que se usará como Header
                 val response = RetrofitClient.publicFlightService.getCalendarFlights(token, origen, destino, fecha)
 
                 withContext(Dispatchers.Main) {
-                    // dentro de withContext(Dispatchers.Main) { ... }
                     if (response.success && response.data.isNotEmpty()) {
-                        // Convertimos los valores del mapa (los vuelos) en una lista
                         val listaDeVuelos = response.data.values.toList()
                         vuelosAdapter.updateData(listaDeVuelos)
                     } else {
                         vuelosAdapter.updateData(emptyList())
                         Toast.makeText(this@Vuelos, "No se encontraron vuelos para esa ruta y fecha", Toast.LENGTH_LONG).show()
                     }
-
                 }
             } catch (e: Exception) {
                 withContext(Dispatchers.Main) {
@@ -74,13 +71,27 @@ class Vuelos : AppCompatActivity() {
         }
     }
 
-    // --- COMIENZA LA DEFINICIÓN DE VUELOSADAPTER (MOVIDA AQUÍ) ---
     inner class VuelosAdapter(private var vuelos: List<FlightData>) : RecyclerView.Adapter<VuelosAdapter.VueloViewHolder>() {
 
         inner class VueloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
             val txtOrigenDestino: TextView = itemView.findViewById(R.id.txtOrigenDestino)
             val txtFechas: TextView = itemView.findViewById(R.id.txtFechas)
             val txtPrecio: TextView = itemView.findViewById(R.id.txtPrecio)
+
+            init {
+                itemView.setOnClickListener {
+                    val position = adapterPosition
+                    if (position != RecyclerView.NO_POSITION) {
+                        val vueloSeleccionado = vuelos[position]
+                        val context = itemView.context
+                        val intent = Intent(context, ReservaVueloActivity::class.java).apply {
+                            // Pasamos el objeto FlightData completo
+                            putExtra("EXTRA_VUELO_DATA", vueloSeleccionado)
+                        }
+                        context.startActivity(intent)
+                    }
+                }
+            }
         }
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VueloViewHolder {
@@ -110,5 +121,4 @@ class Vuelos : AppCompatActivity() {
             notifyDataSetChanged()
         }
     }
-    // --- FIN DE LA DEFINICIÓN DE VUELOSADAPTER ---
 }

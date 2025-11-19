@@ -52,7 +52,10 @@ class Login : AppCompatActivity() {
                 val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == password }
 
                 withContext(Dispatchers.Main) {
-                    if (usuarioEncontrado != null) {
+                    if (usuarioEncontrado != null && usuarioEncontrado.idUsuario != null) {
+                        // Guardar el ID del usuario en la sesión
+                        SessionManager.saveUserId(this@Login, usuarioEncontrado.idUsuario)
+
                         Toast.makeText(this@Login, "✅ Inicio de sesión correcto", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this@Login, MainActivity::class.java)
                         startActivity(intent)

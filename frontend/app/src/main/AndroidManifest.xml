@@ -36,6 +36,11 @@
             android:name=".Vuelos"
             android:exported="false" />
 
+        <!-- Actividad de Reserva de Vuelo (AÑADIDA) -->
+        <activity
+            android:name=".ReservaVueloActivity"
+            android:exported="false" />
+
         <!-- Otras pantallas -->
         <activity
             android:name=".MainActivity"
