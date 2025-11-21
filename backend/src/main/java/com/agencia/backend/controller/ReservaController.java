@@ -23,4 +23,20 @@ public class ReservaController {
     public Reserva create(@RequestBody Reserva reserva) {
         return reservaRepository.save(reserva);
     }
+
+
+    @GetMapping("/usuario/{idUsuario}")
+    public List<Reserva> getReservasByUsuario(@PathVariable Long idUsuario) {
+        return reservaRepository.findById_usuario(idUsuario);
+    }
+    
+    @GetMapping("/usuario/{idUsuario}/vuelos")
+    public List<Reserva> getVuelosByUsuario(@PathVariable Long idUsuario) {
+        return reservaRepository.findById_usuarioAndTipo(idUsuario, "vuelo");
+    }
+
+    @GetMapping("/usuario/{idUsuario}/hoteles")
+    public List<Reserva> getHotelesByUsuario(@PathVariable Long idUsuario) {
+        return reservaRepository.findById_usuarioAndTipo(idUsuario, "hotel");
+    }
 }

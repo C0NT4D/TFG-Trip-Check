@@ -21,7 +21,6 @@ class MainActivity : AppCompatActivity() {
         val btnBuscarVuelos = findViewById<Button>(R.id.btnBuscarVuelos)
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
 
-        // --- Lógica del DatePickerDialog ---
         editFechaIda.isFocusable = false
         editFechaIda.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -31,14 +30,12 @@ class MainActivity : AppCompatActivity() {
 
             val datePickerDialog = DatePickerDialog(this, {
                     _, selectedYear, selectedMonth, selectedDay ->
-                // Formatear la fecha a YYYY-MM para la API de Travelpayouts Calendar
                 val apiDate = String.format("%d-%02d", selectedYear, selectedMonth + 1)
 
-                // Para mostrar al usuario, podemos usar un formato más amigable
                 val displayDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
 
-                editFechaIda.setText(displayDate) // Mostramos fecha completa al usuario
-                editFechaIda.tag = apiDate // Guardamos la fecha para la API en el 'tag' del EditText
+                editFechaIda.setText(displayDate)
+                editFechaIda.tag = apiDate
             }, year, month, day)
 
 
@@ -49,14 +46,13 @@ class MainActivity : AppCompatActivity() {
             val origen = editOrigen.text.toString().trim()
             val destino = editDestino.text.toString().trim()
 
-            // Obtenemos la fecha para la API desde el 'tag'
+
             val fechaIdaApi = editFechaIda.tag as? String
 
             if (origen.isNotEmpty() && destino.isNotEmpty()) {
                 val intent = Intent(this, Vuelos::class.java).apply {
                     putExtra("EXTRA_ORIGEN", origen)
                     putExtra("EXTRA_DESTINO", destino)
-                    // Solo se envía la fecha si el usuario la ha seleccionado
                     if (!fechaIdaApi.isNullOrEmpty()) {
                         putExtra("EXTRA_FECHA_IDA", fechaIdaApi)
                     }
@@ -71,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_vuelos -> {
-                    startActivity(Intent(this, Vuelos::class.java))
+
                     true
                 }
                 R.id.navigation_hoteles -> {
@@ -79,10 +75,17 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_reservas -> {
+                    startActivity(Intent(this, HistorialReservasActivity::class.java))
                     true
                 }
                 else -> false
             }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNavigation.selectedItemId = R.id.navigation_vuelos
     }
 }

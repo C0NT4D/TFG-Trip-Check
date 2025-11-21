@@ -30,7 +30,6 @@ class Registro : AppCompatActivity() {
             val contrasena = editTextContraseña.text.toString().trim()
 
             if (nombre.isNotEmpty() && email.isNotEmpty() && contrasena.isNotEmpty()) {
-                // Corregido: Usar argumentos con nombre para evitar ambigüedad
                 val nuevoUsuario = Usuario(nombre = nombre, email = email, contrasena = contrasena)
                 CoroutineScope(Dispatchers.IO).launch {
                     try {

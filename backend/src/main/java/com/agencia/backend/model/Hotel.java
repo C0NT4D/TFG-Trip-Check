@@ -15,7 +15,6 @@ public class Hotel {
     private double precio_noche;
     private int habitaciones_disponibles;
 
-    // Getters y setters
     public Long getId_hotel() { return id_hotel; }
     public void setId_hotel(Long id_hotel) { this.id_hotel = id_hotel; }
 

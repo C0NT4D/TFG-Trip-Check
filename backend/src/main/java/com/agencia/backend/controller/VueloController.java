@@ -8,7 +8,7 @@ import com.agencia.backend.repository.VueloRepository;
 
 @RestController
 @RequestMapping("/api/vuelos")
-@CrossOrigin(origins = "*") // Permite llamadas desde Android
+@CrossOrigin(origins = "*") 
 public class VueloController {
 
     @Autowired

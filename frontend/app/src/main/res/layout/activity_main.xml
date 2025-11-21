@@ -8,7 +8,6 @@
     android:background="#EAF6FF"
     tools:context=".MainActivity">
 
-    <!-- Contenedor para futuros fragmentos -->
     <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="0dp"
@@ -18,7 +17,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
-        <!-- Interfaz por defecto (Búsqueda de Vuelos) -->
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -108,7 +106,6 @@
 
     </FrameLayout>
 
-    <!-- Barra de Navegación Inferior -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation"
         android:layout_width="0dp"

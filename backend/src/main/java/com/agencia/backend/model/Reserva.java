@@ -17,7 +17,6 @@ public class Reserva {
     private LocalDate fecha_reserva;
     private String estado;
 
-    // Getters y setters
     public Long getId_reserva() { return id_reserva; }
     public void setId_reserva(Long id_reserva) { this.id_reserva = id_reserva; }
 

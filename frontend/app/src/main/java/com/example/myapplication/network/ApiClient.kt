@@ -10,10 +10,10 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.Serializable
 
-// --- MODELOS DE DATOS ---
 
 data class Usuario(
     @SerializedName("id_usuario")
@@ -40,10 +40,8 @@ data class FlightData(
     @SerializedName("departure_at") val departureAt: String,
     @SerializedName("return_at") val returnAt: String,
     @SerializedName("expires_at") val expiresAt: String
-) : Serializable // <-- Implementar Serializable
+) : Serializable
 
-// NUEVOS MODELOS PARA TU BACKEND
-// CORRECCIÓN FINAL: Alineados los @SerializedName con los nombres de campo del backend (camelCase)
 data class Vuelo(
     @SerializedName("idVuelo")
     val idVuelo: Long? = null,
@@ -60,7 +58,7 @@ data class Vuelo(
 
 data class Reserva(
     @SerializedName("id_reserva")
-    val idReserva: Long? = null, // Nulable para creación
+    val idReserva: Long? = null,
     @SerializedName("id_usuario")
     val idUsuario: Long,
     val tipo: String,
@@ -74,7 +72,6 @@ data class Reserva(
 ) : Serializable
 
 
-// --- INTERFACES DE SERVICIO ---
 
 interface MyBackendService {
     @POST("usuarios")
@@ -88,6 +85,9 @@ interface MyBackendService {
 
     @POST("reservas")
     suspend fun addReserva(@Body reserva: Reserva): Reserva
+
+    @GET("reservas/usuario/{idUsuario}/vuelos")
+    suspend fun getReservasVuelosUsuario(@Path("idUsuario") idUsuario: Long): List<Reserva>
 }
 
 interface TravelpayoutsService {
@@ -101,7 +101,6 @@ interface TravelpayoutsService {
 }
 
 
-// --- CLIENTE RETROFIT (SINGLETON) ---
 object RetrofitClient {
 
     private val loggingInterceptor = HttpLoggingInterceptor().apply {

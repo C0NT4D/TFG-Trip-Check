@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <!-- Permiso para acceder a Internet -->
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -17,7 +16,6 @@
         <activity
             android:name=".MisViajes"
             android:exported="false" />
-        <!-- Pantalla de inicio (Login) -->
         <activity
             android:name=".Login"
             android:exported="true">
@@ -26,22 +24,23 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- Actividad de Registro -->
+        </activity>
         <activity
             android:name=".Registro"
             android:exported="false" />
 
-        <!-- Actividad de Vuelos -->
         <activity
             android:name=".Vuelos"
             android:exported="false" />
 
-        <!-- Actividad de Reserva de Vuelo (AÑADIDA) -->
         <activity
             android:name=".ReservaVueloActivity"
             android:exported="false" />
 
-        <!-- Otras pantallas -->
+        <activity
+            android:name=".HistorialReservasActivity"
+            android:exported="false" />
+
         <activity
             android:name=".MainActivity"
             android:exported="false" />

@@ -7,7 +7,7 @@ object SessionManager {
 
     private const val PREFS_NAME = "TripCheckPrefs"
     private const val KEY_USER_ID = "user_id"
-    private const val DEFAULT_USER_ID = -1L // Valor por defecto si no hay nadie logueado
+    private const val DEFAULT_USER_ID = -1L
 
     private fun getPreferences(context: Context): SharedPreferences {
         return context.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)

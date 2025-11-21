@@ -8,7 +8,6 @@
     android:background="#EAF6FF" 
     tools:context=".Registro">
 
-    <!-- Título -->
     <TextView
         android:id="@+id/txtTituloRegistro"
         android:layout_width="wrap_content"
@@ -22,7 +21,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="100dp" />
 
-    <!-- Campo de Nombre -->
     <EditText
         android:id="@+id/editTextNombre"
         android:layout_width="0dp"
@@ -37,7 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Campo de Email -->
     <EditText
         android:id="@+id/editTextEmail"
         android:layout_width="0dp"
@@ -52,7 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Campo de Contraseña -->
     <EditText
         android:id="@+id/editTextContraseña"
         android:layout_width="0dp"
@@ -67,7 +63,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Botón de Registro -->
     <Button
         android:id="@+id/buttonRegistro"
         android:layout_width="0dp"
@@ -82,7 +77,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Texto para ir al Login -->
     <TextView
         android:id="@+id/txtIrALogin"
         android:layout_width="wrap_content"

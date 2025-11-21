@@ -54,7 +54,7 @@ class ReservaVueloActivity : AppCompatActivity() {
         }
 
         btnVolver.setOnClickListener {
-            finish() // Cierra la actividad y vuelve a la anterior (Vuelos)
+            finish()
         }
     }
 
@@ -67,7 +67,6 @@ class ReservaVueloActivity : AppCompatActivity() {
         txtVueloOrigenDestino.text = "${vuelo.origin} → ${vuelo.destination}"
         txtVueloAerolinea.text = "Aerolínea: ${vuelo.airline}"
 
-        // Corregir la visualización del precio
         val priceInEuros = vuelo.price / 100.0
         txtVueloPrecio.text = String.format(Locale.getDefault(), "Precio: %.2f €", priceInEuros)
 
@@ -96,7 +95,6 @@ class ReservaVueloActivity : AppCompatActivity() {
                 val fechaSalidaBackend = departureLocalDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
                 val fechaLlegadaBackend = arrivalLocalDateTime.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)
 
-                // Corregir el precio al enviar al backend
                 val priceInEuros = vueloData.price / 100.0
 
                 val nuevoVuelo = Vuelo(
@@ -104,7 +102,7 @@ class ReservaVueloActivity : AppCompatActivity() {
                     destino = vueloData.destination,
                     fechaSalida = fechaSalidaBackend,
                     fechaLlegada = fechaLlegadaBackend,
-                    precio = priceInEuros, // <- Precio corregido
+                    precio = priceInEuros, 
                     plazasDisponibles = 50
                 )
 

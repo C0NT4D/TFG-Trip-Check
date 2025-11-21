@@ -26,7 +26,6 @@ public class Vuelo {
     @Column(name = "plazas_disponibles")
     private int plazasDisponibles;
 
-    // --- Getters y Setters ---
     public Long getIdVuelo() { return idVuelo; }
     public void setIdVuelo(Long idVuelo) { this.idVuelo = idVuelo; }
 

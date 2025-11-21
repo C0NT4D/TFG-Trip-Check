@@ -53,7 +53,7 @@ class Login : AppCompatActivity() {
 
                 withContext(Dispatchers.Main) {
                     if (usuarioEncontrado != null && usuarioEncontrado.idUsuario != null) {
-                        // Guardar el ID del usuario en la sesión
+
                         SessionManager.saveUserId(this@Login, usuarioEncontrado.idUsuario)
 
                         Toast.makeText(this@Login, "✅ Inicio de sesión correcto", Toast.LENGTH_SHORT).show()

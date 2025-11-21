@@ -14,7 +14,6 @@ public class Usuario {
     private String contraseña;
     private String rol;
 
-    // Getters y setters
     public Long getId_usuario() { return id_usuario; }
     public void setId_usuario(Long id_usuario) { this.id_usuario = id_usuario; }
 
