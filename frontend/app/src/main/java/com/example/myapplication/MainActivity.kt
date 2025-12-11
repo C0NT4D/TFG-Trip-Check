@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_vuelos -> {
-                    // No es necesario iniciar una nueva MainActivity si ya estamos aquí
+
                     true
                 }
                 R.id.navigation_hoteles -> {

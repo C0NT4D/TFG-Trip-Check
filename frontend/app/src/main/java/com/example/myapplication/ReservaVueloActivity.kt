@@ -102,7 +102,7 @@ class ReservaVueloActivity : AppCompatActivity() {
                     destino = vueloData.destination,
                     fechaSalida = fechaSalidaBackend,
                     fechaLlegada = fechaLlegadaBackend,
-                    precio = priceInEuros, 
+                    precio = priceInEuros,
                     plazasDisponibles = 50
                 )
 

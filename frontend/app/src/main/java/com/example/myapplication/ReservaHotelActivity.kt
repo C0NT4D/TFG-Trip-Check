@@ -27,7 +27,6 @@ class ReservaHotelActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_reserva_hotel)
 
-        // Recuperar datos del Intent
         hotelWrapper = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             intent.getSerializableExtra("HOTEL_DATA", HotelPropertyWrapper::class.java)
         } else {
@@ -45,6 +44,8 @@ class ReservaHotelActivity : AppCompatActivity() {
         setupUI(hotelWrapper!!)
 
         val btnConfirmarReserva = findViewById<Button>(R.id.btnConfirmarReservaHotel)
+        val btnVolver = findViewById<Button>(R.id.btnVolverHotel)
+
         btnConfirmarReserva.setOnClickListener {
             if (SessionManager.isLoggedIn(this)) {
                 confirmarReserva(hotelWrapper!!)
@@ -52,6 +53,10 @@ class ReservaHotelActivity : AppCompatActivity() {
                 Toast.makeText(this, "Debes iniciar sesión para poder reservar", Toast.LENGTH_LONG).show()
                 startActivity(Intent(this, Login::class.java))
             }
+        }
+
+        btnVolver.setOnClickListener {
+            finish()
         }
     }
 
@@ -80,26 +85,23 @@ class ReservaHotelActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-                // CORREGIDO: Si las estrellas son 0 o nulas, se asigna 3 por defecto
                 val estrellas = if (hotelDetails.qualityClass == null || hotelDetails.qualityClass == 0) {
                     3
                 } else {
                     hotelDetails.qualityClass
                 }
 
-                // 1. Guardar el hotel en nuestro backend
                 val nuevoHotel = Hotel(
                     nombre = hotelDetails.name,
                     ciudad = ciudad ?: "Desconocida",
                     precioPorNoche = hotelDetails.priceBreakdown.grossPrice.value,
                     estrellas = estrellas,
-                    habitacionesDisponibles = 1 // Asigna un valor por defecto
+                    habitacionesDisponibles = 1
                 )
                 val hotelGuardado = RetrofitClient.myBackendService.addHotel(nuevoHotel)
                 val idHotelGuardado = hotelGuardado.idHotel
 
                 if (idHotelGuardado != null) {
-                    // 2. Crear la reserva asociada al hotel
                     val nuevaReserva = Reserva(
                         idUsuario = userId,
                         tipo = "hotel",
@@ -111,10 +113,12 @@ class ReservaHotelActivity : AppCompatActivity() {
                     RetrofitClient.myBackendService.addReserva(nuevaReserva)
 
                     Toast.makeText(this@ReservaHotelActivity, "¡Reserva de hotel confirmada!", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this@ReservaHotelActivity, HistorialReservasActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+                    
+
+                    val intent = Intent(this@ReservaHotelActivity, MainActivity::class.java)
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
                     startActivity(intent)
-                    finish() 
+                    finishAffinity()
                 } else {
                     Toast.makeText(this@ReservaHotelActivity, "Error al guardar el hotel en el backend.", Toast.LENGTH_SHORT).show()
                 }

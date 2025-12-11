@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.network.HotelPropertyWrapper
 import com.example.myapplication.network.RetrofitClient
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -39,6 +40,7 @@ class HotelesActivity : AppCompatActivity() {
         editFechaCheckOut = findViewById(R.id.editFechaCheckOut)
         btnBuscarHoteles = findViewById(R.id.btnBuscarHoteles)
         recyclerViewHoteles = findViewById(R.id.recyclerViewHoteles)
+        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_hoteles)
 
         setupRecyclerView()
 
@@ -56,11 +58,30 @@ class HotelesActivity : AppCompatActivity() {
                 Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show()
             }
         }
+
+
+        bottomNavigation.selectedItemId = R.id.navigation_hoteles
+        bottomNavigation.setOnItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.navigation_vuelos -> {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    true
+                }
+                R.id.navigation_hoteles -> {
+                    // No hacer nada, ya estamos aquí
+                    true
+                }
+                R.id.navigation_reservas -> {
+                    startActivity(Intent(this, HistorialReservasActivity::class.java))
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     private fun setupRecyclerView() {
         hotelesAdapter = HotelesAdapter(emptyList()) { hotelSeleccionado ->
-            // Ahora también pasamos la ciudad que el usuario buscó
             val ciudadBuscada = editDestinoHotel.text.toString().trim()
             val intent = Intent(this, ReservaHotelActivity::class.java).apply {
                 putExtra("HOTEL_DATA", hotelSeleccionado)

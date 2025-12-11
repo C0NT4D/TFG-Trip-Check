@@ -35,7 +35,6 @@ class MisHotelesFragment : Fragment() {
 
     private fun setupRecyclerView() {
         recyclerView.layoutManager = LinearLayoutManager(context)
-        // Usaremos un nuevo adapter para las reservas de hoteles
         adapter = ReservasHotelesAdapter(emptyList())
         recyclerView.adapter = adapter
     }
