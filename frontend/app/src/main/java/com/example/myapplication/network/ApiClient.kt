@@ -14,6 +14,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.Serializable
 
+// --- MODELOS DE DATOS --- (SIN CAMBIOS)
 
 data class Usuario(
     @SerializedName("id_usuario")
@@ -71,6 +72,60 @@ data class Reserva(
     val estado: String
 ) : Serializable
 
+// --- MODELOS PARA HOTELES ---
+
+data class Hotel(
+    @SerializedName("idHotel")
+    val idHotel: Long? = null,
+    val nombre: String,
+    val ciudad: String,
+    @SerializedName("precioPorNoche")
+    val precioPorNoche: Double
+) : Serializable
+
+// --- MODELOS PARA LA API DE BOOKING (CORREGIDOS DE UNA PUTA VEZ) ---
+data class BookingSearchResponse(
+    val data: List<BookingDestination>
+)
+
+data class BookingDestination(
+    @SerializedName("dest_id") val destId: String,
+    val label: String,
+    @SerializedName("search_type") val searchType: String?
+)
+
+data class BookingHotelSearchResponse(
+    val data: BookingHotelData
+)
+
+data class BookingHotelData(
+    val hotels: List<HotelPropertyWrapper> // <-- Contiene la lista de hoteles
+)
+
+// El objeto principal de cada hotel en la lista
+data class HotelPropertyWrapper(
+    @SerializedName("property")
+    val property: HotelDetails
+) : Serializable
+
+// Los detalles que nos interesan del hotel
+data class HotelDetails(
+    @SerializedName("name") val name: String,
+    @SerializedName("reviewScore") val reviewScore: Double?,
+    @SerializedName("photoUrls") val photoUrls: List<String>?,
+    @SerializedName("priceBreakdown") val priceBreakdown: PriceBreakdown
+)
+
+// El desglose del precio
+data class PriceBreakdown(
+    @SerializedName("grossPrice") val grossPrice: GrossPrice
+)
+
+// El precio final
+data class GrossPrice(
+    @SerializedName("currency") val currency: String,
+    @SerializedName("value") val value: Double
+)
 
 
 interface MyBackendService {
@@ -82,6 +137,9 @@ interface MyBackendService {
 
     @POST("api/vuelos")
     suspend fun addVuelo(@Body vuelo: Vuelo): Vuelo
+
+    @POST("api/hoteles")
+    suspend fun addHotel(@Body hotel: Hotel): Hotel
 
     @POST("reservas")
     suspend fun addReserva(@Body reserva: Reserva): Reserva
@@ -100,6 +158,26 @@ interface TravelpayoutsService {
     ): TravelpayoutsResponse
 }
 
+interface BookingService {
+    @GET("api/v1/hotels/searchDestination")
+    suspend fun searchDestination(
+        @Header("X-RapidAPI-Key") apiKey: String = "442a55ce04msha6515ba2887d41ap1bf203jsn11dc4c1f0b68",
+        @Header("X-RapidAPI-Host") apiHost: String = "booking-com15.p.rapidapi.com",
+        @Query("query") cityName: String
+    ): BookingSearchResponse
+
+    @GET("api/v1/hotels/searchHotels")
+    suspend fun searchHotels(
+        @Header("X-RapidAPI-Key") apiKey: String = "442a55ce04msha6515ba2887d41ap1bf203jsn11dc4c1f0b68",
+        @Header("X-RapidAPI-Host") apiHost: String = "booking-com15.p.rapidapi.com",
+        @Query("dest_id") destId: String,
+        @Query("search_type") searchType: String,
+        @Query("arrival_date") arrivalDate: String,
+        @Query("departure_date") departureDate: String,
+        @Query("locale") locale: String = "es",
+        @Query("currency") currency: String = "EUR"
+    ): BookingHotelSearchResponse
+}
 
 object RetrofitClient {
 
@@ -126,11 +204,23 @@ object RetrofitClient {
             .build()
     }
 
+    private val bookingRetrofit by lazy {
+        Retrofit.Builder()
+            .baseUrl("https://booking-com15.p.rapidapi.com/")
+            .client(okHttpClient)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
     val myBackendService: MyBackendService by lazy {
         myBackendRetrofit.create(MyBackendService::class.java)
     }
 
     val publicFlightService: TravelpayoutsService by lazy {
         publicApiRetrofit.create(TravelpayoutsService::class.java)
+    }
+
+    val bookingService: BookingService by lazy {
+        bookingRetrofit.create(BookingService::class.java)
     }
 }

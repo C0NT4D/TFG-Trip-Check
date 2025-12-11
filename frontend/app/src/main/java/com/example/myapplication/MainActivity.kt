@@ -31,9 +31,7 @@ class MainActivity : AppCompatActivity() {
             val datePickerDialog = DatePickerDialog(this, {
                     _, selectedYear, selectedMonth, selectedDay ->
                 val apiDate = String.format("%d-%02d", selectedYear, selectedMonth + 1)
-
                 val displayDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
-
                 editFechaIda.setText(displayDate)
                 editFechaIda.tag = apiDate
             }, year, month, day)
@@ -45,8 +43,6 @@ class MainActivity : AppCompatActivity() {
         btnBuscarVuelos.setOnClickListener {
             val origen = editOrigen.text.toString().trim()
             val destino = editDestino.text.toString().trim()
-
-
             val fechaIdaApi = editFechaIda.tag as? String
 
             if (origen.isNotEmpty() && destino.isNotEmpty()) {
@@ -67,11 +63,11 @@ class MainActivity : AppCompatActivity() {
         bottomNavigation.setOnItemSelectedListener { item ->
             when (item.itemId) {
                 R.id.navigation_vuelos -> {
-
+                    // No es necesario iniciar una nueva MainActivity si ya estamos aquí
                     true
                 }
                 R.id.navigation_hoteles -> {
-                    Toast.makeText(this, "Hoteles seleccionado", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, HotelesActivity::class.java))
                     true
                 }
                 R.id.navigation_reservas -> {
@@ -81,6 +77,8 @@ class MainActivity : AppCompatActivity() {
                 else -> false
             }
         }
+        // Para que la primera vez se seleccione "Vuelos"
+        bottomNavigation.selectedItemId = R.id.navigation_vuelos
     }
 
     override fun onResume() {
