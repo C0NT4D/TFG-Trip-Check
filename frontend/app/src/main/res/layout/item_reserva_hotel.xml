@@ -6,6 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
+    app:cardBackgroundColor="#FFFFFF"
     app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
@@ -15,40 +16,40 @@
         android:padding="16dp">
 
         <TextView
-            android:id="@+id/txtOrigenDestino"
+            android:id="@+id/text_reserva_hotel_titulo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:text="Reserva de Hotel"
             android:textColor="#003366"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:text="Madrid → Barcelona" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
-            android:id="@+id/txtFechas"
+            android:id="@+id/text_fecha_reserva_hotel"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:textColor="#005588"
-            android:textSize="16sp"
-            app:layout_constraintTop_toBottomOf="@+id/txtOrigenDestino"
+            android:layout_marginTop="8dp"
+            android:textColor="#003366"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            tools:text="Salida: 29 Oct 2024, 09:00 (Iberia)" />
+            app:layout_constraintTop_toBottomOf="@+id/text_reserva_hotel_titulo"
+            tools:text="Fecha de reserva: 2025-12-11" />
 
         <TextView
-            android:id="@+id/txtPrecio"
+            android:id="@+id/text_estado_reserva_hotel"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:textColor="#0077B6"
-            android:textSize="22sp"
+            android:background="@drawable/background_estado_reserva"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintTop_toBottomOf="@+id/txtFechas"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            tools:text="120.50 €" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Activa" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

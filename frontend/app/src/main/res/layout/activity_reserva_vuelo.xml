@@ -1,73 +1,118 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="16dp"
+    android:background="#EAF6FF"
     tools:context=".ReservaVueloActivity">
 
-    <TextView
-        android:id="@+id/txtVueloTitulo"
-        android:layout_width="wrap_content"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardVueloReserva"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Reserva de Vuelo"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:layout_margin="16dp"
+        app:cardBackgroundColor="#FFFFFF"
+        app:cardCornerRadius="12dp"
+        app:cardElevation="4dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
-    <TextView
-        android:id="@+id/txtVueloOrigenDestino"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:textSize="18sp"
-        tools:text="Origen → Destino" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
 
-    <TextView
-        android:id="@+id/txtVueloFecha"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        tools:text="Fecha: 2024-10-29 09:00" />
+            <TextView
+                android:id="@+id/txtVueloTitulo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Resumen del Vuelo"
+                android:textColor="#003366"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-    <TextView
-        android:id="@+id/txtVueloAerolinea"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="16sp"
-        tools:text="Aerolínea: Iberia" />
+            <TextView
+                android:id="@+id/txtVueloOrigenDestino"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#003366"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/txtVueloTitulo"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Origen → Destino" />
 
-    <TextView
-        android:id="@+id/txtVueloPrecio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:textSize="20sp"
-        android:textStyle="bold"
-        tools:text="Precio: 120.50 €" />
+            <TextView
+                android:id="@+id/txtVueloFecha"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:textColor="#005588"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/txtVueloOrigenDestino"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Fecha: 2024-10-29 09:00" />
+
+            <TextView
+                android:id="@+id/txtVueloAerolinea"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="#005588"
+                android:textSize="16sp"
+                app:layout_constraintTop_toBottomOf="@+id/txtVueloFecha"
+                app:layout_constraintStart_toStartOf="parent"
+                tools:text="Aerolínea: Iberia" />
+
+            <TextView
+                android:id="@+id/txtVueloPrecio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="#0077B6"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@+id/txtVueloAerolinea"
+                app:layout_constraintEnd_toEndOf="parent"
+                tools:text="120.50 €" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
 
     <LinearLayout
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
 
         <Button
             android:id="@+id/btnVolver"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_marginEnd="8dp"
-            android:text="Volver" />
+            android:text="Volver"
+            android:textColor="#0077B6" />
 
         <Button
             android:id="@+id/btnConfirmarReserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Confirmar Reserva" />
+            android:backgroundTint="#0077B6"
+            android:text="Confirmar"
+            android:textColor="#FFFFFF" />
     </LinearLayout>
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

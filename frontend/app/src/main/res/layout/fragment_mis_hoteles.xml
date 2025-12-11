@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#EAF6FF"
     tools:context=".MisHotelesFragment">
 
-    <TextView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_hoteles" 
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="Mis Hoteles (Próximamente)" />
+        android:padding="8dp"
+        android:clipToPadding="false"
+        tools:listitem="@layout/item_reserva_hotel" />
 
 </FrameLayout>

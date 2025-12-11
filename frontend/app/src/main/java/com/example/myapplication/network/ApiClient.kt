@@ -75,15 +75,19 @@ data class Reserva(
 // --- MODELOS PARA HOTELES ---
 
 data class Hotel(
-    @SerializedName("idHotel")
+    @SerializedName("id_hotel")
     val idHotel: Long? = null,
     val nombre: String,
+    @SerializedName("ubicacion")
     val ciudad: String,
-    @SerializedName("precioPorNoche")
-    val precioPorNoche: Double
+    @SerializedName("precio_noche")
+    val precioPorNoche: Double,
+    val estrellas: Int,
+    @SerializedName("habitaciones_disponibles")
+    val habitacionesDisponibles: Int
 ) : Serializable
 
-// --- MODELOS PARA LA API DE BOOKING (CORREGIDOS DE UNA PUTA VEZ) ---
+// --- MODELOS PARA LA API DE BOOKING (CORREGIDOS) ---
 data class BookingSearchResponse(
     val data: List<BookingDestination>
 )
@@ -113,19 +117,20 @@ data class HotelDetails(
     @SerializedName("name") val name: String,
     @SerializedName("reviewScore") val reviewScore: Double?,
     @SerializedName("photoUrls") val photoUrls: List<String>?,
-    @SerializedName("priceBreakdown") val priceBreakdown: PriceBreakdown
-)
+    @SerializedName("priceBreakdown") val priceBreakdown: PriceBreakdown,
+    @SerializedName("qualityClass") val qualityClass: Int?
+) : Serializable
 
 // El desglose del precio
 data class PriceBreakdown(
     @SerializedName("grossPrice") val grossPrice: GrossPrice
-)
+) : Serializable
 
 // El precio final
 data class GrossPrice(
     @SerializedName("currency") val currency: String,
     @SerializedName("value") val value: Double
-)
+) : Serializable
 
 
 interface MyBackendService {
@@ -138,7 +143,7 @@ interface MyBackendService {
     @POST("api/vuelos")
     suspend fun addVuelo(@Body vuelo: Vuelo): Vuelo
 
-    @POST("api/hoteles")
+    @POST("hoteles")
     suspend fun addHotel(@Body hotel: Hotel): Hotel
 
     @POST("reservas")
@@ -146,6 +151,9 @@ interface MyBackendService {
 
     @GET("reservas/usuario/{idUsuario}/vuelos")
     suspend fun getReservasVuelosUsuario(@Path("idUsuario") idUsuario: Long): List<Reserva>
+
+    @GET("reservas/usuario/{idUsuario}/hoteles")
+    suspend fun getReservasHotelesUsuario(@Path("idUsuario") idUsuario: Long): List<Reserva>
 }
 
 interface TravelpayoutsService {

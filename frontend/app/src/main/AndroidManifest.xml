@@ -38,11 +38,16 @@
             android:name=".ReservaVueloActivity"
             android:exported="false" />
 
+        <!-- Actividad de Reserva de Hotel (AÑADIDA) -->
+        <activity
+            android:name=".ReservaHotelActivity"
+            android:exported="false" />
+
         <activity
             android:name=".HistorialReservasActivity"
             android:exported="false" />
 
-        <!-- Actividad de Hoteles (AÑADIDA) -->
+        <!-- Actividad de Hoteles -->
         <activity
             android:name=".HotelesActivity"
             android:exported="false" />

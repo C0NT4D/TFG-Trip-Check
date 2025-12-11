@@ -5,8 +5,20 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#EAF6FF" 
+    android:background="#EAF6FF"
     tools:context=".Registro">
+
+    <ImageView
+        android:id="@+id/imgLogoRegistro"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:src="@drawable/logotripcheck"
+        android:contentDescription="@string/logotripcheck"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="60dp"
+        android:adjustViewBounds="true" />
 
     <TextView
         android:id="@+id/txtTituloRegistro"
@@ -16,10 +28,10 @@
         android:textColor="#003366"
         android:textSize="28sp"
         android:textStyle="bold"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imgLogoRegistro"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_marginTop="100dp" />
+        android:layout_marginTop="30dp" />
 
     <EditText
         android:id="@+id/editTextNombre"
@@ -33,7 +45,8 @@
         android:background="@drawable/edittext_background"
         app:layout_constraintTop_toBottomOf="@+id/txtTituloRegistro"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" 
+        android:autofillHints="name"/>
 
     <EditText
         android:id="@+id/editTextEmail"
@@ -47,7 +60,8 @@
         android:background="@drawable/edittext_background"
         app:layout_constraintTop_toBottomOf="@+id/editTextNombre"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" 
+        android:autofillHints="emailAddress"/>
 
     <EditText
         android:id="@+id/editTextContraseña"
@@ -61,7 +75,8 @@
         android:background="@drawable/edittext_background"
         app:layout_constraintTop_toBottomOf="@+id/editTextEmail"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent" 
+        android:autofillHints="password"/>
 
     <Button
         android:id="@+id/buttonRegistro"

@@ -6,7 +6,8 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="16dp"
     android:layout_marginVertical="8dp"
-    app:cardCornerRadius="8dp"
+    app:cardBackgroundColor="#FFFFFF"
+    app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,12 +16,25 @@
         android:padding="16dp">
 
         <TextView
+            android:id="@+id/text_reserva_vuelo_titulo"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Reserva de Vuelo"
+            android:textColor="#003366"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
             android:id="@+id/text_fecha_reserva"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+            android:layout_marginTop="8dp"
+            android:textColor="#003366"
+            android:textSize="14sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_reserva_vuelo_titulo"
             tools:text="Fecha de reserva: 2025-11-19" />
 
         <TextView
@@ -28,9 +42,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/background_estado_reserva"
-            android:paddingHorizontal="8dp"
-            android:paddingVertical="4dp"
-            android:textColor="@android:color/white"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="5dp"
+            android:textColor="#FFFFFF"
+            android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent"

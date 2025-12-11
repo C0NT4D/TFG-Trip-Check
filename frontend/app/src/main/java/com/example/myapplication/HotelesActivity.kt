@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -58,7 +59,15 @@ class HotelesActivity : AppCompatActivity() {
     }
 
     private fun setupRecyclerView() {
-        hotelesAdapter = HotelesAdapter(emptyList())
+        hotelesAdapter = HotelesAdapter(emptyList()) { hotelSeleccionado ->
+            // Ahora también pasamos la ciudad que el usuario buscó
+            val ciudadBuscada = editDestinoHotel.text.toString().trim()
+            val intent = Intent(this, ReservaHotelActivity::class.java).apply {
+                putExtra("HOTEL_DATA", hotelSeleccionado)
+                putExtra("HOTEL_CIUDAD", ciudadBuscada)
+            }
+            startActivity(intent)
+        }
         recyclerViewHoteles.layoutManager = LinearLayoutManager(this)
         recyclerViewHoteles.adapter = hotelesAdapter
     }
@@ -85,11 +94,12 @@ class HotelesActivity : AppCompatActivity() {
                 if (hotelsResponse.data.hotels.isNotEmpty()) {
                     hotelesAdapter.updateData(hotelsResponse.data.hotels)
                 } else {
+                    hotelesAdapter.updateData(emptyList())
                     Toast.makeText(this@HotelesActivity, "No se encontraron hoteles para esas fechas", Toast.LENGTH_SHORT).show()
                 }
 
             } catch (e: Exception) {
-                Toast.makeText(this@HotelesActivity, "Error: ${e.message}", Toast.LENGTH_LONG).show()
+                Toast.makeText(this@HotelesActivity, "Error en la búsqueda: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
@@ -110,14 +120,31 @@ class HotelesActivity : AppCompatActivity() {
     }
 }
 
-// --- ADAPTADOR PARA EL RECYCLERVIEW DE HOTELES (CORREGIDO) ---
-class HotelesAdapter(private var hoteles: List<HotelPropertyWrapper>) : RecyclerView.Adapter<HotelesAdapter.HotelViewHolder>() {
+class HotelesAdapter(
+    private var hoteles: List<HotelPropertyWrapper>,
+    private val onItemClicked: (HotelPropertyWrapper) -> Unit
+) : RecyclerView.Adapter<HotelesAdapter.HotelViewHolder>() {
 
     inner class HotelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imgHotel: ImageView = itemView.findViewById(R.id.imgHotel)
-        val txtHotelName: TextView = itemView.findViewById(R.id.txtHotelName)
-        val txtHotelPrice: TextView = itemView.findViewById(R.id.txtHotelPrice)
-        val txtHotelReviewScore: TextView = itemView.findViewById(R.id.txtHotelReviewScore)
+        private val imgHotel: ImageView = itemView.findViewById(R.id.imgHotel)
+        private val txtHotelName: TextView = itemView.findViewById(R.id.txtHotelName)
+        private val txtHotelPrice: TextView = itemView.findViewById(R.id.txtHotelPrice)
+        private val txtHotelReviewScore: TextView = itemView.findViewById(R.id.txtHotelReviewScore)
+
+        fun bind(hotelWrapper: HotelPropertyWrapper) {
+            val hotel = hotelWrapper.property
+            itemView.setOnClickListener { onItemClicked(hotelWrapper) }
+
+            txtHotelName.text = hotel.name
+            txtHotelPrice.text = String.format("%.2f %s", hotel.priceBreakdown.grossPrice.value, hotel.priceBreakdown.grossPrice.currency)
+            txtHotelReviewScore.text = hotel.reviewScore?.toString() ?: "-"
+
+            if (hotel.photoUrls != null && hotel.photoUrls.isNotEmpty()) {
+                Picasso.get().load(hotel.photoUrls[0]).into(imgHotel)
+            } else {
+                imgHotel.setImageResource(R.drawable.ic_launcher_background)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HotelViewHolder {
@@ -126,18 +153,7 @@ class HotelesAdapter(private var hoteles: List<HotelPropertyWrapper>) : Recycler
     }
 
     override fun onBindViewHolder(holder: HotelViewHolder, position: Int) {
-        val hotelWrapper = hoteles[position]
-        val hotel = hotelWrapper.property
-
-        holder.txtHotelName.text = hotel.name
-        holder.txtHotelPrice.text = String.format("%.2f %s", hotel.priceBreakdown.grossPrice.value, hotel.priceBreakdown.grossPrice.currency)
-        holder.txtHotelReviewScore.text = hotel.reviewScore?.toString() ?: "-"
-
-        if (hotel.photoUrls != null && hotel.photoUrls.isNotEmpty()) {
-            Picasso.get().load(hotel.photoUrls[0]).into(holder.imgHotel)
-        } else {
-            holder.imgHotel.setImageResource(R.drawable.ic_launcher_background)
-        }
+        holder.bind(hoteles[position])
     }
 
     override fun getItemCount(): Int = hoteles.size
