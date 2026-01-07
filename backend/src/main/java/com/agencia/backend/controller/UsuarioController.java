@@ -23,4 +23,9 @@ public class UsuarioController {
     public Usuario create(@RequestBody Usuario usuario) {
         return usuarioRepository.save(usuario);
     }
+        @PutMapping("/{id}")
+    public Usuario update(@PathVariable Long id, @RequestBody Usuario usuario) {
+        usuario.setId_usuario(id); 
+        return usuarioRepository.save(usuario);
+    }
 }

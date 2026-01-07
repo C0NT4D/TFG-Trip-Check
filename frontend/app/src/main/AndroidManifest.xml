@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
     <application
         android:allowBackup="true"
@@ -34,19 +36,22 @@
             android:exported="false" />
         <activity
             android:name=".Vuelos"
-            android:exported="false" /> <!-- Actividad de Reserva de Vuelo -->
+            android:exported="false" />
         <activity
             android:name=".ReservaVueloActivity"
-            android:exported="false" /> <!-- Actividad de Reserva de Hotel (AÑADIDA) -->
+            android:exported="false" />
         <activity
             android:name=".ReservaHotelActivity"
             android:exported="false" />
         <activity
             android:name=".HistorialReservasActivity"
-            android:exported="false" /> <!-- Actividad de Hoteles -->
+            android:exported="false" />
         <activity
             android:name=".HotelesActivity"
-            android:exported="false" /> <!-- Otras pantallas -->
+            android:exported="false" />
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="false" /> <!-- ¡AÑADIDA! -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

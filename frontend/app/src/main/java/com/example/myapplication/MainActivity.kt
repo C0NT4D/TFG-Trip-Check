@@ -54,8 +54,8 @@ class MainActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_perfil -> {
-                    // val intent = Intent(this, PerfilActivity::class.java)
-                    // startActivity(intent)
+                    val intent = Intent(this, PerfilActivity::class.java)
+                    startActivity(intent)
                     true
                 }
                 else -> false
