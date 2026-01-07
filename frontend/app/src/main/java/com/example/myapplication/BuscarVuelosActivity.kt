@@ -1,6 +1,7 @@
 package com.example.myapplication
 
 import android.app.DatePickerDialog
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
@@ -29,21 +30,30 @@ class BuscarVuelosActivity : AppCompatActivity() {
         btnBuscarVuelos.setOnClickListener {
             val origen = etOrigen.text.toString().trim()
             val destino = etDestino.text.toString().trim()
-            val fecha = etFecha.text.toString().trim()
+            val fechaInput = etFecha.text.toString().trim()
 
-            if (origen.isEmpty() || destino.isEmpty() || fecha.isEmpty()) {
+            if (origen.isEmpty() || destino.isEmpty() || fechaInput.isEmpty()) {
                 Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                // TODO: Aquí irá la lógica para pasar a la siguiente pantalla con los resultados
-                Toast.makeText(this, "Buscando vuelos de $origen a $destino el $fecha", Toast.LENGTH_LONG).show()
+                // Conversión de fecha de dd/MM/yyyy a yyyy-MM-dd
+                val fechaFormateada = try {
+                    val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
+                    formatter.format(parser.parse(fechaInput))
+                } catch (e: Exception) {
+                    null
+                }
 
-                // Ejemplo de cómo pasarías a la siguiente actividad (cuando la tengas)
-                // val intent = Intent(this, VuelosResultadosActivity::class.java).apply {
-                //     putExtra("EXTRA_ORIGEN", origen)
-                //     putExtra("EXTRA_DESTINO", destino)
-                //     putExtra("EXTRA_FECHA", fecha)
-                // }
-                // startActivity(intent)
+                if (fechaFormateada != null) {
+                    val intent = Intent(this, Vuelos::class.java).apply {
+                        putExtra("EXTRA_ORIGEN", origen)
+                        putExtra("EXTRA_DESTINO", destino)
+                        putExtra("EXTRA_FECHA_IDA", fechaFormateada)
+                    }
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(this, "Formato de fecha inválido", Toast.LENGTH_SHORT).show()
+                }
             }
         }
     }

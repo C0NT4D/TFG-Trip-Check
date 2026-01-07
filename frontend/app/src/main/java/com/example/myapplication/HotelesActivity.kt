@@ -44,6 +44,15 @@ class HotelesActivity : AppCompatActivity() {
 
         setupRecyclerView()
 
+        // --- Lógica para recibir datos del vuelo ---
+        val destinoVuelo = intent.getStringExtra("EXTRA_DESTINO")
+        val fechaCheckInVuelo = intent.getStringExtra("EXTRA_CHECK_IN_DATE")
+
+        if (destinoVuelo != null && fechaCheckInVuelo != null) {
+            editDestinoHotel.setText(destinoVuelo)
+            editFechaCheckIn.setText(fechaCheckInVuelo)
+        }
+
         editFechaCheckIn.setOnClickListener { showDatePickerDialog(editFechaCheckIn) }
         editFechaCheckOut.setOnClickListener { showDatePickerDialog(editFechaCheckOut) }
 
