@@ -1,89 +1,95 @@
 package com.example.myapplication
 
-import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
-import java.util.Calendar
+import me.relex.circleindicator.CircleIndicator3
 
 class MainActivity : AppCompatActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val editOrigen = findViewById<EditText>(R.id.editOrigen)
-        val editDestino = findViewById<EditText>(R.id.editDestino)
-        val editFechaIda = findViewById<EditText>(R.id.editFechaIda)
-        val btnBuscarVuelos = findViewById<Button>(R.id.btnBuscarVuelos)
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-
-        editFechaIda.isFocusable = false
-        editFechaIda.setOnClickListener {
-            val calendar = Calendar.getInstance()
-            val year = calendar.get(Calendar.YEAR)
-            val month = calendar.get(Calendar.MONTH)
-            val day = calendar.get(Calendar.DAY_OF_MONTH)
-
-            val datePickerDialog = DatePickerDialog(this, {
-                    _, selectedYear, selectedMonth, selectedDay ->
-                val apiDate = String.format("%d-%02d", selectedYear, selectedMonth + 1)
-                val displayDate = String.format("%02d/%02d/%d", selectedDay, selectedMonth + 1, selectedYear)
-                editFechaIda.setText(displayDate)
-                editFechaIda.tag = apiDate
-            }, year, month, day)
-
-
-            datePickerDialog.show()
+        // --- Configuración del Botón "Crear Viaje" ---
+        val btnCrearViaje = findViewById<Button>(R.id.btnCrearViaje)
+        btnCrearViaje.setOnClickListener {
+            val intent = Intent(this, BuscarVuelosActivity::class.java)
+            startActivity(intent)
         }
 
-        btnBuscarVuelos.setOnClickListener {
-            val origen = editOrigen.text.toString().trim()
-            val destino = editDestino.text.toString().trim()
-            val fechaIdaApi = editFechaIda.tag as? String
+        // --- Configuración del ViewPager2 (Carrusel) ---
+        val viewPager = findViewById<ViewPager2>(R.id.viewPager)
+        val indicator = findViewById<CircleIndicator3>(R.id.indicator)
 
-            if (origen.isNotEmpty() && destino.isNotEmpty()) {
-                val intent = Intent(this, Vuelos::class.java).apply {
-                    putExtra("EXTRA_ORIGEN", origen)
-                    putExtra("EXTRA_DESTINO", destino)
-                    if (!fechaIdaApi.isNullOrEmpty()) {
-                        putExtra("EXTRA_FECHA_IDA", fechaIdaApi)
-                    }
-                }
-                startActivity(intent)
-            } else {
-                Toast.makeText(this, "El origen y el destino son obligatorios", Toast.LENGTH_SHORT).show()
-            }
-        }
+        val imageList = listOf(
+            R.drawable.imgcarrusel1,
+            R.drawable.imgcarrusel2,
+            R.drawable.imgcarrusel3
+        )
+
+        val adapter = ImageCarouselAdapter(imageList)
+        viewPager.adapter = adapter
+        indicator.setViewPager(viewPager)
 
 
-        bottomNavigation.setOnItemSelectedListener { item ->
+        // --- Configuración de la BottomNavigationView ---
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        bottomNav.selectedItemId = R.id.navigation_home
+
+        bottomNav.setOnItemSelectedListener { item ->
             when (item.itemId) {
-                R.id.navigation_vuelos -> {
-
+                R.id.navigation_home -> true
+                R.id.navigation_mis_viajes -> {
+                    val intent = Intent(this, HistorialReservasActivity::class.java)
+                    startActivity(intent)
                     true
                 }
-                R.id.navigation_hoteles -> {
-                    startActivity(Intent(this, HotelesActivity::class.java))
-                    true
-                }
-                R.id.navigation_reservas -> {
-                    startActivity(Intent(this, HistorialReservasActivity::class.java))
+                R.id.navigation_perfil -> {
+                    // val intent = Intent(this, PerfilActivity::class.java)
+                    // startActivity(intent)
                     true
                 }
                 else -> false
             }
         }
-        // Para que la primera vez se seleccione "Vuelos"
-        bottomNavigation.selectedItemId = R.id.navigation_vuelos
     }
 
     override fun onResume() {
         super.onResume()
-        val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation)
-        bottomNavigation.selectedItemId = R.id.navigation_vuelos
+        val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
+        if (bottomNav.selectedItemId != R.id.navigation_home) {
+            bottomNav.selectedItemId = R.id.navigation_home
+        }
+    }
+}
+
+class ImageCarouselAdapter(private val imageList: List<Int>) :
+    RecyclerView.Adapter<ImageCarouselAdapter.ImageViewHolder>() {
+
+    inner class ImageViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val imageView: ImageView = itemView.findViewById(R.id.carousel_image_view)
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.item_carousel_image, parent, false)
+        return ImageViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ImageViewHolder, position: Int) {
+        holder.imageView.setImageResource(imageList[position])
+    }
+
+    override fun getItemCount(): Int {
+        return imageList.size
     }
 }

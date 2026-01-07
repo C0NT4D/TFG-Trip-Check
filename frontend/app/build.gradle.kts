@@ -63,4 +63,7 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
+    implementation("androidx.viewpager2:viewpager2:1.1.0")
+    implementation("me.relex:circleindicator:2.1.6")
+
 }

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
+
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
@@ -13,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".BuscarVuelosActivity"
+            android:exported="false" />
         <activity
             android:name=".MisViajes"
             android:exported="false" />
@@ -28,31 +32,21 @@
         <activity
             android:name=".Registro"
             android:exported="false" />
-
         <activity
             android:name=".Vuelos"
-            android:exported="false" />
-
-        <!-- Actividad de Reserva de Vuelo -->
+            android:exported="false" /> <!-- Actividad de Reserva de Vuelo -->
         <activity
             android:name=".ReservaVueloActivity"
-            android:exported="false" />
-
-        <!-- Actividad de Reserva de Hotel (AÑADIDA) -->
+            android:exported="false" /> <!-- Actividad de Reserva de Hotel (AÑADIDA) -->
         <activity
             android:name=".ReservaHotelActivity"
             android:exported="false" />
-
         <activity
             android:name=".HistorialReservasActivity"
-            android:exported="false" />
-
-        <!-- Actividad de Hoteles -->
+            android:exported="false" /> <!-- Actividad de Hoteles -->
         <activity
             android:name=".HotelesActivity"
-            android:exported="false" />
-
-        <!-- Otras pantallas -->
+            android:exported="false" /> <!-- Otras pantallas -->
         <activity
             android:name=".MainActivity"
             android:exported="false" />

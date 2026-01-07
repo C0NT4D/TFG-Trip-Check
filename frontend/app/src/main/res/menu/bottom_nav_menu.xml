@@ -1,19 +1,15 @@
-<?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
     <item
-        android:id="@+id/navigation_vuelos"
-        android:icon="@android:drawable/ic_menu_send" 
-        android:title="Vuelos" />
-
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home"
+        android:title="Inicio" />
     <item
-        android:id="@+id/navigation_hoteles"
-        android:icon="@android:drawable/ic_menu_compass" 
-        android:title="Hoteles" />
-
-    <item
-        android:id="@+id/navigation_reservas"
-        android:icon="@android:drawable/ic_menu_myplaces" 
+        android:id="@+id/navigation_mis_viajes"
+        android:icon="@drawable/ic_mis_viajes"
         android:title="Mis Viajes" />
-
+    <item
+        android:id="@+id/navigation_perfil"
+        android:icon="@drawable/ic_perfil"
+        android:title="Perfil" />
 </menu>
+    
