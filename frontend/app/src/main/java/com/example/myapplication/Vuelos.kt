@@ -86,7 +86,7 @@ class Vuelos : AppCompatActivity() {
                         val vueloSeleccionado = vuelos[position]
                         val context = itemView.context
                         val intent = Intent(context, HotelesActivity::class.java).apply {
-                            // Pasa el destino y la fecha de llegada del vuelo a la actividad de hoteles
+                            putExtra("EXTRA_VUELO_DATA", vueloSeleccionado)
                             putExtra("EXTRA_DESTINO", vueloSeleccionado.destination)
 
                             val fechaSalida = try {
