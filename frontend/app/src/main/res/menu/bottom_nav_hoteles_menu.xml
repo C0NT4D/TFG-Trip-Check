@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_vuelos"
+        android:icon="@drawable/ic_flight"
+        android:title="Vuelos" />
+    <item
+        android:id="@+id/navigation_hoteles"
+        android:icon="@drawable/ic_hotel"
+        android:title="Hoteles" />
+    <item
+        android:id="@+id/navigation_reservas"
+        android:icon="@drawable/ic_mis_viajes"
+        android:title="Reservas" />
+</menu>
+    

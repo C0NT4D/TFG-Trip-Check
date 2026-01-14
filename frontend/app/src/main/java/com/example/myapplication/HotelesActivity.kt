@@ -2,6 +2,7 @@ package com.example.myapplication
 
 import android.app.DatePickerDialog
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.network.FlightData
 import com.example.myapplication.network.HotelPropertyWrapper
 import com.example.myapplication.network.RetrofitClient
 import com.google.android.material.bottomnavigation.BottomNavigationView
@@ -30,6 +32,7 @@ class HotelesActivity : AppCompatActivity() {
     private lateinit var btnBuscarHoteles: Button
     private lateinit var recyclerViewHoteles: RecyclerView
     private lateinit var hotelesAdapter: HotelesAdapter
+    private var vueloSeleccionado: FlightData? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +46,21 @@ class HotelesActivity : AppCompatActivity() {
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_hoteles)
 
         setupRecyclerView()
+
+        vueloSeleccionado = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("EXTRA_VUELO_DATA", FlightData::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("EXTRA_VUELO_DATA") as? FlightData
+        }
+
+        val destinoVuelo = intent.getStringExtra("EXTRA_DESTINO")
+        val fechaCheckInVuelo = intent.getStringExtra("EXTRA_CHECK_IN_DATE")
+
+        if (destinoVuelo != null && fechaCheckInVuelo != null) {
+            editDestinoHotel.setText(destinoVuelo)
+            editFechaCheckIn.setText(fechaCheckInVuelo)
+        }
 
         editFechaCheckIn.setOnClickListener { showDatePickerDialog(editFechaCheckIn) }
         editFechaCheckOut.setOnClickListener { showDatePickerDialog(editFechaCheckOut) }
@@ -68,7 +86,6 @@ class HotelesActivity : AppCompatActivity() {
                     true
                 }
                 R.id.navigation_hoteles -> {
-                    // No hacer nada, ya estamos aquí
                     true
                 }
                 R.id.navigation_reservas -> {
@@ -86,6 +103,7 @@ class HotelesActivity : AppCompatActivity() {
             val intent = Intent(this, ReservaHotelActivity::class.java).apply {
                 putExtra("HOTEL_DATA", hotelSeleccionado)
                 putExtra("HOTEL_CIUDAD", ciudadBuscada)
+                vueloSeleccionado?.let { putExtra("EXTRA_VUELO_DATA", it) }
             }
             startActivity(intent)
         }

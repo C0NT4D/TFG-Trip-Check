@@ -10,6 +10,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.Header
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.Serializable
@@ -139,6 +140,9 @@ interface MyBackendService {
 
     @GET("usuarios")
     suspend fun getUsuarios(): List<Usuario>
+    
+    @PUT("usuarios/{id}")
+    suspend fun updateUsuario(@Path("id") id: Long, @Body usuario: Usuario): Usuario
 
     @POST("api/vuelos")
     suspend fun addVuelo(@Body vuelo: Vuelo): Vuelo

@@ -9,10 +9,12 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.myapplication.network.FlightData
 import com.example.myapplication.network.Hotel
 import com.example.myapplication.network.HotelPropertyWrapper
 import com.example.myapplication.network.Reserva
 import com.example.myapplication.network.RetrofitClient
+import com.example.myapplication.network.Vuelo
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -21,6 +23,7 @@ import java.util.Locale
 class ReservaHotelActivity : AppCompatActivity() {
 
     private var hotelWrapper: HotelPropertyWrapper? = null
+    private var vueloSeleccionado: FlightData? = null
     private var ciudad: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -33,6 +36,14 @@ class ReservaHotelActivity : AppCompatActivity() {
             @Suppress("DEPRECATION")
             intent.getSerializableExtra("HOTEL_DATA") as? HotelPropertyWrapper
         }
+
+        vueloSeleccionado = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            intent.getSerializableExtra("EXTRA_VUELO_DATA", FlightData::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            intent.getSerializableExtra("EXTRA_VUELO_DATA") as? FlightData
+        }
+
         ciudad = intent.getStringExtra("HOTEL_CIUDAD")
 
         if (hotelWrapper == null) {
@@ -85,6 +96,32 @@ class ReservaHotelActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
+                vueloSeleccionado?.let { vuelo ->
+                    val fechaSalidaStr = vuelo.departureAt.substring(0, 10)
+                    val fechaLlegadaStr = if (vuelo.returnAt.isNotEmpty()) vuelo.returnAt.substring(0, 10) else fechaSalidaStr
+
+                    val nuevoVuelo = Vuelo(
+                        origen = vuelo.origin,
+                        destino = vuelo.destination,
+                        fechaSalida = fechaSalidaStr + "T00:00:00",
+                        fechaLlegada = fechaLlegadaStr + "T00:00:00",
+                        precio = vuelo.price / 100.0,
+                        plazasDisponibles = 1
+                    )
+                    val vueloGuardado = RetrofitClient.myBackendService.addVuelo(nuevoVuelo)
+                    vueloGuardado.idVuelo?.let { idVueloGuardado ->
+                        val reservaVuelo = Reserva(
+                            idUsuario = userId,
+                            tipo = "vuelo",
+                            idVuelo = idVueloGuardado,
+                            idHotel = null,
+                            fechaReserva = LocalDate.now().toString(),
+                            estado = "activa"
+                        )
+                        RetrofitClient.myBackendService.addReserva(reservaVuelo)
+                    }
+                }
+
                 val estrellas = if (hotelDetails.qualityClass == null || hotelDetails.qualityClass == 0) {
                     3
                 } else {
@@ -99,10 +136,9 @@ class ReservaHotelActivity : AppCompatActivity() {
                     habitacionesDisponibles = 1
                 )
                 val hotelGuardado = RetrofitClient.myBackendService.addHotel(nuevoHotel)
-                val idHotelGuardado = hotelGuardado.idHotel
 
-                if (idHotelGuardado != null) {
-                    val nuevaReserva = Reserva(
+                hotelGuardado.idHotel?.let { idHotelGuardado ->
+                    val nuevaReservaHotel = Reserva(
                         idUsuario = userId,
                         tipo = "hotel",
                         idVuelo = null,
@@ -110,18 +146,15 @@ class ReservaHotelActivity : AppCompatActivity() {
                         fechaReserva = LocalDate.now().toString(),
                         estado = "activa"
                     )
-                    RetrofitClient.myBackendService.addReserva(nuevaReserva)
-
-                    Toast.makeText(this@ReservaHotelActivity, "¡Reserva de hotel confirmada!", Toast.LENGTH_LONG).show()
-                    
-
-                    val intent = Intent(this@ReservaHotelActivity, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
-                    startActivity(intent)
-                    finishAffinity()
-                } else {
-                    Toast.makeText(this@ReservaHotelActivity, "Error al guardar el hotel en el backend.", Toast.LENGTH_SHORT).show()
+                    RetrofitClient.myBackendService.addReserva(nuevaReservaHotel)
                 }
+
+                Toast.makeText(this@ReservaHotelActivity, "¡Tu viaje ha sido reservado!", Toast.LENGTH_LONG).show()
+                val intent = Intent(this@ReservaHotelActivity, MainActivity::class.java)
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                startActivity(intent)
+                finishAffinity()
+
             } catch (e: Exception) {
                 Toast.makeText(this@ReservaHotelActivity, "Error al confirmar la reserva: ${e.message}", Toast.LENGTH_LONG).show()
             }

@@ -85,8 +85,17 @@ class Vuelos : AppCompatActivity() {
                     if (position != RecyclerView.NO_POSITION) {
                         val vueloSeleccionado = vuelos[position]
                         val context = itemView.context
-                        val intent = Intent(context, ReservaVueloActivity::class.java).apply {
+                        val intent = Intent(context, HotelesActivity::class.java).apply {
                             putExtra("EXTRA_VUELO_DATA", vueloSeleccionado)
+                            putExtra("EXTRA_DESTINO", vueloSeleccionado.destination)
+
+                            val fechaSalida = try {
+                                LocalDateTime.parse(vueloSeleccionado.departureAt, DateTimeFormatter.ISO_DATE_TIME)
+                                    .toLocalDate().toString() // Convierte a "yyyy-MM-dd"
+                            } catch (e: Exception) {
+                                null
+                            }
+                            putExtra("EXTRA_CHECK_IN_DATE", fechaSalida)
                         }
                         context.startActivity(intent)
                     }
