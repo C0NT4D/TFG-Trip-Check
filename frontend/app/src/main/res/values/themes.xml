@@ -7,6 +7,10 @@
 
     <style name="Theme.MyApplication" parent="Base.Theme.MyApplication" />
 
+    <!-- Estilos para la Toolbar -->
+    <style name="Theme.MyApplication.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="Theme.MyApplication.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
     <!-- Estilo para imagen circular -->
     <style name="CircleImageStyle">
         <item name="cornerFamily">rounded</item>

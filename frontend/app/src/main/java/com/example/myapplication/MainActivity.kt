@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import me.relex.circleindicator.CircleIndicator3
 
 class MainActivity : AppCompatActivity() {
@@ -23,6 +24,13 @@ class MainActivity : AppCompatActivity() {
         val btnCrearViaje = findViewById<Button>(R.id.btnCrearViaje)
         btnCrearViaje.setOnClickListener {
             val intent = Intent(this, BuscarVuelosActivity::class.java)
+            startActivity(intent)
+        }
+
+        // --- Configuración del Botón Flotante del Chat ---
+        val fabChat = findViewById<FloatingActionButton>(R.id.fab_chat)
+        fabChat.setOnClickListener {
+            val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
 
@@ -39,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         val adapter = ImageCarouselAdapter(imageList)
         viewPager.adapter = adapter
         indicator.setViewPager(viewPager)
-
 
         // --- Configuración de la BottomNavigationView ---
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)

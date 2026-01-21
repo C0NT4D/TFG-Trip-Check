@@ -14,6 +14,7 @@ import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 import java.io.Serializable
+import java.util.concurrent.TimeUnit
 
 
 
@@ -127,7 +128,6 @@ data class PriceBreakdown(
     @SerializedName("grossPrice") val grossPrice: GrossPrice
 ) : Serializable
 
-
 data class GrossPrice(
     @SerializedName("currency") val currency: String,
     @SerializedName("value") val value: Double
@@ -158,6 +158,9 @@ interface MyBackendService {
 
     @GET("reservas/usuario/{idUsuario}/hoteles")
     suspend fun getReservasHotelesUsuario(@Path("idUsuario") idUsuario: Long): List<Reserva>
+
+    @POST("ai/ask")
+    suspend fun askChatbot(@Body message: Map<String, String>): Map<String, String>
 }
 
 interface TravelpayoutsService {
@@ -197,13 +200,23 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    private val okHttpClient = OkHttpClient.Builder()
+    // Cliente OkHttp para el backend con timeouts largos
+    private val myBackendOkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .connectTimeout(60, TimeUnit.SECONDS)
+        .readTimeout(60, TimeUnit.SECONDS)
+        .writeTimeout(60, TimeUnit.SECONDS)
+        .build()
+
+    // Cliente OkHttp para las APIs públicas (con timeouts por defecto)
+    private val publicApiOkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .build()
 
     private val myBackendRetrofit by lazy {
         Retrofit.Builder()
             .baseUrl(BuildConfig.BACKEND_URL)
+            .client(myBackendOkHttpClient) // <-- USAR EL CLIENTE CON TIMEOUTS LARGOS
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -211,7 +224,7 @@ object RetrofitClient {
     private val publicApiRetrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://api.travelpayouts.com/")
-            .client(okHttpClient)
+            .client(publicApiOkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
@@ -219,7 +232,7 @@ object RetrofitClient {
     private val bookingRetrofit by lazy {
         Retrofit.Builder()
             .baseUrl("https://booking-com15.p.rapidapi.com/")
-            .client(okHttpClient)
+            .client(publicApiOkHttpClient)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

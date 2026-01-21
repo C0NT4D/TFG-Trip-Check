@@ -17,6 +17,9 @@
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".BuscarVuelosActivity"
             android:exported="false" />
         <activity
