@@ -36,7 +36,6 @@ class PerfilActivity : AppCompatActivity() {
     private var currentUsuario: Usuario? = null
     private var imageUri: Uri? = null
 
-    // Registra el resultado de la selección de imagen
     private val pickImageLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
             val data: Intent? = result.data
@@ -60,10 +59,8 @@ class PerfilActivity : AppCompatActivity() {
         btnCambiarFoto = findViewById(R.id.btnCambiarFoto)
         btnVolver = findViewById(R.id.btnVolverPerfil)
 
-        // Cargar imagen guardada si existe
         loadProfileImage()
 
-        // Cargar datos del usuario
         cargarDatosUsuario()
 
         btnCambiarFoto.setOnClickListener {
@@ -119,7 +116,6 @@ class PerfilActivity : AppCompatActivity() {
         }
 
         val userId = SessionManager.getUserId(this)
-        // Mantenemos la contraseña anterior si no se escribe una nueva
         val passwordFinal = if (nuevaPassword.isNotEmpty()) nuevaPassword else (currentUsuario?.contrasena ?: "")
 
         val usuarioActualizado = Usuario(
@@ -132,7 +128,6 @@ class PerfilActivity : AppCompatActivity() {
 
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                // Asumimos que el backend tiene un endpoint PUT /usuarios/{id}
                 RetrofitClient.myBackendService.updateUsuario(userId, usuarioActualizado)
                 withContext(Dispatchers.Main) {
                     Toast.makeText(this@PerfilActivity, "Perfil actualizado correctamente", Toast.LENGTH_SHORT).show()
@@ -150,7 +145,6 @@ class PerfilActivity : AppCompatActivity() {
     private fun cerrarSesion() {
         SessionManager.logout(this)
         val intent = Intent(this, Login::class.java)
-        // Limpiar pila de actividades para que no se pueda volver atrás
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         startActivity(intent)
         finish()
@@ -163,20 +157,15 @@ class PerfilActivity : AppCompatActivity() {
 
     private fun loadProfileImage() {
         val prefs = getSharedPreferences("TripCheckPrefs", Context.MODE_PRIVATE)
-        // Usamos una clave genérica o asociada al ID si ya lo tenemos, 
-        // pero al iniciar onCreate aun no tenemos el ID cargado del backend, 
-        // aunque sí en SessionManager.
         val userId = SessionManager.getUserId(this)
         val uriString = prefs.getString("profile_image_uri_com.example.myapplication.network.Usuario", null) 
-        // Nota: La clave anterior estaba mal formada en el save, simplifiquemos:
-        
+
         val uriSaved = prefs.getString("user_image_$userId", null)
         if (uriSaved != null) {
             imgPerfil.setImageURI(Uri.parse(uriSaved))
         }
     }
     
-    // Sobreescribimos saveProfileImageUri para usar el ID correcto
     private fun saveProfileImageUriCorrect(uriString: String) {
          val userId = SessionManager.getUserId(this)
          val prefs = getSharedPreferences("TripCheckPrefs", Context.MODE_PRIVATE)

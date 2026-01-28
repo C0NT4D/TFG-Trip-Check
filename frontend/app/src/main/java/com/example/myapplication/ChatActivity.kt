@@ -51,7 +51,6 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Manejar el clic en el botón de atrás de la toolbar
         if (item.itemId == android.R.id.home) {
             finish()
             return true
@@ -66,20 +65,17 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private fun sendMessage(messageText: String) {
-        // Añadir mensaje del usuario a la UI
         val userMessage = ChatMessage(messageText, true)
         chatAdapter.addMessage(userMessage)
         recyclerView.scrollToPosition(messages.size - 1)
         editText.text.clear()
 
-        // Enviar mensaje al backend
         lifecycleScope.launch {
             try {
                 val requestBody = mapOf("message" to messageText)
                 val response = RetrofitClient.myBackendService.askChatbot(requestBody)
                 val botResponseText = response["answer"] ?: "No he podido obtener una respuesta."
 
-                // Añadir respuesta del bot a la UI
                 val botMessage = ChatMessage(botResponseText, false)
                 chatAdapter.addMessage(botMessage)
                 recyclerView.scrollToPosition(messages.size - 1)

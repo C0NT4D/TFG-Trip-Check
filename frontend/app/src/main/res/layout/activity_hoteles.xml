@@ -7,7 +7,6 @@
     android:background="#EAF6FF"
     tools:context=".HotelesActivity">
 
-    <!-- Título principal -->
     <TextView
         android:id="@+id/txtTituloHoteles"
         android:layout_width="wrap_content"
@@ -21,7 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Campo para el destino -->
     <EditText
         android:id="@+id/editDestinoHotel"
         android:layout_width="0dp"
@@ -35,7 +33,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Campo para fecha Check-in -->
     <EditText
         android:id="@+id/editFechaCheckIn"
         android:layout_width="0dp"
@@ -51,7 +48,6 @@
         app:layout_constraintEnd_toStartOf="@+id/guideline"
         android:layout_marginEnd="8dp"/>
 
-    <!-- Campo para fecha Check-out -->
     <EditText
         android:id="@+id/editFechaCheckOut"
         android:layout_width="0dp"
@@ -66,7 +62,6 @@
         app:layout_constraintEnd_toEndOf="@id/editDestinoHotel"
         android:layout_marginStart="8dp"/>
 
-    <!-- Línea guía para dividir los campos de fecha -->
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -74,7 +69,6 @@
         android:orientation="vertical"
         app:layout_constraintGuide_percent="0.5" />
 
-    <!-- Botón para buscar hoteles -->
     <Button
         android:id="@+id/btnBuscarHoteles"
         android:layout_width="0dp"
@@ -88,7 +82,6 @@
         app:layout_constraintStart_toStartOf="@id/editDestinoHotel"
         app:layout_constraintEnd_toEndOf="@id/editDestinoHotel" />
 
-    <!-- Lista para mostrar los resultados de hoteles -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewHoteles"
         android:layout_width="0dp"
@@ -99,7 +92,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Barra de navegación inferior -->
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottom_navigation_hoteles"
         android:layout_width="0dp"
@@ -110,6 +102,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:menu="@menu/bottom_nav_hoteles_menu" /> <!-- MENÚ CORREGIDO AQUÍ -->
+        app:menu="@menu/bottom_nav_hoteles_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

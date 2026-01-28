@@ -12,7 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <!-- Logo de la aplicación -->
         <ImageView
             android:id="@+id/logoImageView"
             android:layout_width="150dp"
@@ -24,7 +23,6 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:srcCompat="@drawable/logotripcheck" />
 
-        <!-- Título de bienvenida (Modificado) -->
         <TextView
             android:id="@+id/txtBienvenida"
             android:layout_width="wrap_content"
@@ -38,7 +36,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/logoImageView" />
 
-        <!-- Botón para iniciar el flujo de creación de viaje (Subido) -->
         <Button
             android:id="@+id/btnCrearViaje"
             android:layout_width="0dp"
@@ -55,7 +52,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/txtBienvenida" />
 
-        <!-- Carrusel de imágenes con ViewPager2 (Más pequeño) -->
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_width="0dp"
@@ -67,7 +63,6 @@
             app:layout_constraintTop_toBottomOf="@id/btnCrearViaje" />
 
 
-        <!-- Indicador de puntos para el ViewPager (Movido abajo) -->
         <me.relex.circleindicator.CircleIndicator3
             android:id="@+id/indicator"
             android:layout_width="wrap_content"
@@ -79,7 +74,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
-        <!-- Barra de navegación inferior -->
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
             android:layout_width="0dp"

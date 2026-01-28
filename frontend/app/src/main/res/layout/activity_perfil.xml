@@ -7,7 +7,6 @@
     android:background="#EAF6FF"
     tools:context=".PerfilActivity">
 
-    <!-- Cabecera / Foto de Perfil -->
     <View
         android:id="@+id/headerBackground"
         android:layout_width="match_parent"
@@ -15,7 +14,6 @@
         android:background="#0077B6"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Botón Volver -->
     <ImageButton
         android:id="@+id/btnVolverPerfil"
         android:layout_width="48dp"
@@ -71,7 +69,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgPerfil" />
 
-    <!-- Formulario -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

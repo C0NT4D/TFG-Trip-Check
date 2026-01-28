@@ -7,7 +7,6 @@
     android:background="#EAF6FF"
     tools:context=".BuscarVuelosActivity">
 
-    <!-- Título principal de la pantalla -->
     <TextView
         android:id="@+id/txtTituloBuscarVuelo"
         android:layout_width="0dp"
@@ -23,7 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Card para el campo de Origen -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardOrigen"
         android:layout_width="0dp"
@@ -55,7 +53,6 @@
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Card para el campo de Destino -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardDestino"
         android:layout_width="0dp"
@@ -87,7 +84,6 @@
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Card para el selector de Fecha -->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardFecha"
         android:layout_width="0dp"
@@ -121,7 +117,6 @@
         </com.google.android.material.textfield.TextInputLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Botón para buscar vuelos -->
     <Button
         android:id="@+id/btnBuscarVuelos"
         android:layout_width="0dp"

@@ -198,7 +198,6 @@ object RetrofitClient {
         level = HttpLoggingInterceptor.Level.BODY
     }
 
-    // Cliente OkHttp para el backend con timeouts largos
     private val myBackendOkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .connectTimeout(60, TimeUnit.SECONDS)
@@ -206,7 +205,6 @@ object RetrofitClient {
         .writeTimeout(60, TimeUnit.SECONDS)
         .build()
 
-    // Cliente OkHttp para las APIs públicas (con timeouts por defecto)
     private val publicApiOkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .build()

@@ -20,21 +20,18 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        // --- Configuración del Botón "Crear Viaje" ---
         val btnCrearViaje = findViewById<Button>(R.id.btnCrearViaje)
         btnCrearViaje.setOnClickListener {
             val intent = Intent(this, BuscarVuelosActivity::class.java)
             startActivity(intent)
         }
 
-        // --- Configuración del Botón Flotante del Chat ---
         val fabChat = findViewById<FloatingActionButton>(R.id.fab_chat)
         fabChat.setOnClickListener {
             val intent = Intent(this, ChatActivity::class.java)
             startActivity(intent)
         }
 
-        // --- Configuración del ViewPager2 (Carrusel) ---
         val viewPager = findViewById<ViewPager2>(R.id.viewPager)
         val indicator = findViewById<CircleIndicator3>(R.id.indicator)
 
@@ -48,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         viewPager.adapter = adapter
         indicator.setViewPager(viewPager)
 
-        // --- Configuración de la BottomNavigationView ---
         val bottomNav = findViewById<BottomNavigationView>(R.id.bottom_navigation)
         bottomNav.selectedItemId = R.id.navigation_home
 

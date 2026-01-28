@@ -21,12 +21,10 @@ class BuscarVuelosActivity : AppCompatActivity() {
         val etFecha = findViewById<TextInputEditText>(R.id.etFecha)
         val btnBuscarVuelos = findViewById<Button>(R.id.btnBuscarVuelos)
 
-        // --- Lógica para el selector de fecha ---
         etFecha.setOnClickListener {
             mostrarDialogoDeFecha(etFecha)
         }
 
-        // --- Lógica para el botón de búsqueda ---
         btnBuscarVuelos.setOnClickListener {
             val origen = etOrigen.text.toString().trim()
             val destino = etDestino.text.toString().trim()
@@ -35,7 +33,6 @@ class BuscarVuelosActivity : AppCompatActivity() {
             if (origen.isEmpty() || destino.isEmpty() || fechaInput.isEmpty()) {
                 Toast.makeText(this, "Por favor, rellena todos los campos", Toast.LENGTH_SHORT).show()
             } else {
-                // Conversión de fecha de dd/MM/yyyy a yyyy-MM-dd
                 val fechaFormateada = try {
                     val parser = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
                     val formatter = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
