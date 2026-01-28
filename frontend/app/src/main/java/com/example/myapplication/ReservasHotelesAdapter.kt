@@ -3,11 +3,15 @@ package com.example.myapplication
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.network.Reserva
 
-class ReservasHotelesAdapter(private var reservas: List<Reserva>) : RecyclerView.Adapter<ReservasHotelesAdapter.ReservaHotelViewHolder>() {
+class ReservasHotelesAdapter(
+    private val reservas: List<Reserva>,
+    private val onDeleteClicked: (Reserva) -> Unit
+) : RecyclerView.Adapter<ReservasHotelesAdapter.ReservaHotelViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReservaHotelViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_reserva_hotel, parent, false)
@@ -20,18 +24,18 @@ class ReservasHotelesAdapter(private var reservas: List<Reserva>) : RecyclerView
 
     override fun getItemCount() = reservas.size
 
-    fun updateData(newReservas: List<Reserva>) {
-        reservas = newReservas
-        notifyDataSetChanged()
-    }
-
-    class ReservaHotelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class ReservaHotelViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private val fechaReservaTextView: TextView = itemView.findViewById(R.id.text_fecha_reserva_hotel)
         private val estadoReservaTextView: TextView = itemView.findViewById(R.id.text_estado_reserva_hotel)
+        private val btnEliminar: ImageButton = itemView.findViewById(R.id.btn_eliminar_reserva_hotel)
 
         fun bind(reserva: Reserva) {
             fechaReservaTextView.text = "Fecha de Reserva: ${reserva.fechaReserva}"
             estadoReservaTextView.text = reserva.estado
+
+            btnEliminar.setOnClickListener {
+                onDeleteClicked(reserva)
+            }
         }
     }
 }

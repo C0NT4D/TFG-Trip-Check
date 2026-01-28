@@ -4,15 +4,10 @@ import com.example.myapplication.BuildConfig
 import com.google.gson.annotations.SerializedName
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
-import retrofit2.http.PUT
-import retrofit2.http.Path
-import retrofit2.http.Query
+import retrofit2.http.*
 import java.io.Serializable
 import java.util.concurrent.TimeUnit
 
@@ -161,6 +156,9 @@ interface MyBackendService {
 
     @POST("ai/ask")
     suspend fun askChatbot(@Body message: Map<String, String>): Map<String, String>
+
+    @DELETE("reservas/{id}")
+    suspend fun deleteReserva(@Path("id") id: Long): Response<Void>
 }
 
 interface TravelpayoutsService {

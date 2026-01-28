@@ -4,6 +4,8 @@ import com.agencia.backend.model.Reserva;
 import com.agencia.backend.repository.ReservaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+
 import java.util.List;
 
 @RestController
@@ -24,7 +26,6 @@ public class ReservaController {
         return reservaRepository.save(reserva);
     }
 
-
     @GetMapping("/usuario/{idUsuario}")
     public List<Reserva> getReservasByUsuario(@PathVariable Long idUsuario) {
         return reservaRepository.findById_usuario(idUsuario);
@@ -38,5 +39,17 @@ public class ReservaController {
     @GetMapping("/usuario/{idUsuario}/hoteles")
     public List<Reserva> getHotelesByUsuario(@PathVariable Long idUsuario) {
         return reservaRepository.findById_usuarioAndTipo(idUsuario, "hotel");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteReserva(@PathVariable Long id) {
+
+        if (!reservaRepository.existsById(id)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        reservaRepository.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
