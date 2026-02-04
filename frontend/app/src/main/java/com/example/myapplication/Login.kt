@@ -48,19 +48,31 @@ class Login : AppCompatActivity() {
     private fun verificarUsuario(email: String, password: String) {
         lifecycleScope.launch(Dispatchers.IO) {
             try {
-                val usuarios = RetrofitClient.myBackendService.getUsuarios()
-                val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == password }
+                // OLD: Insecure, fetched all users
+                // val usuarios = RetrofitClient.myBackendService.getUsuarios()
+                // val usuarioEncontrado = usuarios.find { it.email == email && it.contrasena == password }
+                
+                // NEW: Secure, calling login endpoint
+                val credenciales = mapOf("email" to email, "password" to password)
+                val response = RetrofitClient.myBackendService.login(credenciales)
 
                 withContext(Dispatchers.Main) {
-                    if (usuarioEncontrado != null && usuarioEncontrado.idUsuario != null) {
+                    if (response.isSuccessful && response.body() != null) {
+                        val usuarioEncontrado = response.body()
+                        
+                        if (usuarioEncontrado != null && usuarioEncontrado.idUsuario != null) {
+                             SessionManager.saveUserId(this@Login, usuarioEncontrado.idUsuario)
+                             Toast.makeText(this@Login, "✅ Inicio de sesión correcto", Toast.LENGTH_SHORT).show()
+                             val intent = Intent(this@Login, MainActivity::class.java)
+                             startActivity(intent)
+                             finish()
+                        } else {
+                            // Should not happen if response is successful, but good to check
+                             Toast.makeText(this@Login, "❌ Error obteniendo datos del usuario", Toast.LENGTH_SHORT).show()
+                        }
 
-                        SessionManager.saveUserId(this@Login, usuarioEncontrado.idUsuario)
-
-                        Toast.makeText(this@Login, "✅ Inicio de sesión correcto", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this@Login, MainActivity::class.java)
-                        startActivity(intent)
-                        finish()
                     } else {
+                        // 401 Unauthorized or other error
                         Toast.makeText(this@Login, "❌ Email o contraseña incorrectos", Toast.LENGTH_SHORT).show()
                     }
                 }

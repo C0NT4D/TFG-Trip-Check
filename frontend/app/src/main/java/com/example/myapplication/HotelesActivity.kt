@@ -33,6 +33,7 @@ class HotelesActivity : AppCompatActivity() {
     private lateinit var recyclerViewHoteles: RecyclerView
     private lateinit var hotelesAdapter: HotelesAdapter
     private var vueloSeleccionado: FlightData? = null
+    private lateinit var txtNoGraciasHotel: TextView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,6 +44,7 @@ class HotelesActivity : AppCompatActivity() {
         editFechaCheckOut = findViewById(R.id.editFechaCheckOut)
         btnBuscarHoteles = findViewById(R.id.btnBuscarHoteles)
         recyclerViewHoteles = findViewById(R.id.recyclerViewHoteles)
+        txtNoGraciasHotel = findViewById(R.id.txtNoGraciasHotel)
         val bottomNavigation = findViewById<BottomNavigationView>(R.id.bottom_navigation_hoteles)
 
         setupRecyclerView()
@@ -77,6 +79,9 @@ class HotelesActivity : AppCompatActivity() {
             }
         }
 
+        txtNoGraciasHotel.setOnClickListener {
+            startActivity(Intent(this, MainActivity::class.java))
+        }
 
         bottomNavigation.selectedItemId = R.id.navigation_hoteles
         bottomNavigation.setOnItemSelectedListener { item ->

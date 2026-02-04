@@ -82,12 +82,24 @@
         app:layout_constraintStart_toStartOf="@id/editDestinoHotel"
         app:layout_constraintEnd_toEndOf="@id/editDestinoHotel" />
 
+    <TextView
+        android:id="@+id/txtNoGraciasHotel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No, gracias. No quiero hotel."
+        android:textColor="#0077B6"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/btnBuscarHoteles"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="20dp" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewHoteles"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
-        app:layout_constraintTop_toBottomOf="@+id/btnBuscarHoteles"
+        app:layout_constraintTop_toBottomOf="@+id/txtNoGraciasHotel"
         app:layout_constraintBottom_toTopOf="@+id/bottom_navigation_hoteles"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />

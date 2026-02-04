@@ -136,6 +136,9 @@ interface MyBackendService {
     @GET("usuarios")
     suspend fun getUsuarios(): List<Usuario>
     
+    @POST("usuarios/login")
+    suspend fun login(@Body credenciales: Map<String, String>): Response<Usuario>
+    
     @PUT("usuarios/{id}")
     suspend fun updateUsuario(@Path("id") id: Long, @Body usuario: Usuario): Usuario
 

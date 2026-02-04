@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Trip-Check</string>
     <string name="logotripcheck">Logo de Trip-Check</string>
     <string name="inicia_sesion">Inicia sesión</string>
     <string name="correo_electronico">Correo electrónico</string>

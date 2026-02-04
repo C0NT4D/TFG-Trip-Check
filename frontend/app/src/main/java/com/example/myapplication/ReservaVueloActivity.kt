@@ -84,7 +84,6 @@ class ReservaVueloActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
             try {
-
                 val departureZonedDateTime = ZonedDateTime.parse(vueloData.departureAt)
                 val arrivalString = if (vueloData.returnAt.isNullOrEmpty()) vueloData.departureAt else vueloData.returnAt
                 val arrivalZonedDateTime = ZonedDateTime.parse(arrivalString)
@@ -119,13 +118,23 @@ class ReservaVueloActivity : AppCompatActivity() {
                         estado = "activa"
                     )
 
-                    RetrofitClient.myBackendService.addReserva(nuevaReserva)
+                    val reservaGuardada = RetrofitClient.myBackendService.addReserva(nuevaReserva)
 
-                    Toast.makeText(this@ReservaVueloActivity, "¡Reserva confirmada con éxito!", Toast.LENGTH_LONG).show()
-                    val intent = Intent(this@ReservaVueloActivity, MainActivity::class.java)
-                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-                    startActivity(intent)
-                    finish()
+                    if (reservaGuardada.idReserva != null) {
+                        Toast.makeText(this@ReservaVueloActivity, "¡Reserva de vuelo confirmada! Ahora busca tu hotel.", Toast.LENGTH_LONG).show()
+
+                        val checkInDate = departureZonedDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+
+                        val intent = Intent(this@ReservaVueloActivity, HotelesActivity::class.java).apply {
+                            putExtra("EXTRA_DESTINO", vueloData.destination)
+                            putExtra("EXTRA_CHECK_IN_DATE", checkInDate)
+                            putExtra("EXTRA_VUELO_DATA", vueloData)
+                        }
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Toast.makeText(this@ReservaVueloActivity, "Error al guardar la reserva del vuelo.", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(this@ReservaVueloActivity, "Error al guardar el vuelo.", Toast.LENGTH_SHORT).show()
                 }
