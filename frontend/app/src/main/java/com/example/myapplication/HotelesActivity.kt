@@ -80,7 +80,17 @@ class HotelesActivity : AppCompatActivity() {
         }
 
         txtNoGraciasHotel.setOnClickListener {
-            startActivity(Intent(this, MainActivity::class.java))
+            if (SessionManager.isLoggedIn(this)) {
+                vueloSeleccionado?.let { vuelo ->
+                    confirmarVueloYSalir(vuelo)
+                } ?: run {
+                    Toast.makeText(this, "No hay información de vuelo para guardar", Toast.LENGTH_SHORT).show()
+                    startActivity(Intent(this, MainActivity::class.java))
+                }
+            } else {
+                Toast.makeText(this, "Debes iniciar sesión para confirmar el vuelo", Toast.LENGTH_LONG).show()
+                startActivity(Intent(this, Login::class.java))
+            }
         }
 
         bottomNavigation.selectedItemId = R.id.navigation_hoteles
@@ -98,6 +108,68 @@ class HotelesActivity : AppCompatActivity() {
                     true
                 }
                 else -> false
+            }
+        }
+    }
+
+    private fun confirmarVueloYSalir(vueloData: FlightData) {
+        val userId = SessionManager.getUserId(this)
+
+        lifecycleScope.launch {
+            try {
+                // Formatting dates similar to ReservaVueloActivity
+                val departureZonedDateTime = java.time.ZonedDateTime.parse(vueloData.departureAt)
+                val arrivalString = if (vueloData.returnAt.isNullOrEmpty()) vueloData.departureAt else vueloData.returnAt
+                val arrivalZonedDateTime = java.time.ZonedDateTime.parse(arrivalString)
+
+                val departureLocalDateTime = departureZonedDateTime.toLocalDateTime()
+                val arrivalLocalDateTime = arrivalZonedDateTime.toLocalDateTime()
+
+                val formatter = java.time.format.DateTimeFormatter.ISO_LOCAL_DATE_TIME
+                val fechaSalidaBackend = departureLocalDateTime.format(formatter)
+                val fechaLlegadaBackend = arrivalLocalDateTime.format(formatter)
+
+                val priceInEuros = vueloData.price / 100.0
+
+                val nuevoVuelo = com.example.myapplication.network.Vuelo(
+                    origen = vueloData.origin,
+                    destino = vueloData.destination,
+                    fechaSalida = fechaSalidaBackend,
+                    fechaLlegada = fechaLlegadaBackend,
+                    precio = priceInEuros,
+                    plazasDisponibles = 50
+                )
+
+                val vueloGuardado = RetrofitClient.myBackendService.addVuelo(nuevoVuelo)
+                val idVueloGuardado = vueloGuardado.idVuelo
+
+                if (idVueloGuardado != null) {
+                    val nuevaReserva = com.example.myapplication.network.Reserva(
+                        idUsuario = userId,
+                        tipo = "vuelo",
+                        idVuelo = idVueloGuardado,
+                        idHotel = null,
+                        fechaReserva = java.time.LocalDate.now().toString(),
+                        estado = "activa"
+                    )
+
+                    val reservaGuardada = RetrofitClient.myBackendService.addReserva(nuevaReserva)
+
+                    if (reservaGuardada.idReserva != null) {
+                        Toast.makeText(this@HotelesActivity, "¡Vuelo reservado correctamente!", Toast.LENGTH_LONG).show()
+                        val intent = Intent(this@HotelesActivity, MainActivity::class.java)
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK)
+                        startActivity(intent)
+                        finishAffinity()
+                    } else {
+                        Toast.makeText(this@HotelesActivity, "Error al guardar la reserva del vuelo.", Toast.LENGTH_SHORT).show()
+                    }
+                } else {
+                    Toast.makeText(this@HotelesActivity, "Error al guardar el vuelo.", Toast.LENGTH_SHORT).show()
+                }
+
+            } catch (e: Exception) {
+                Toast.makeText(this@HotelesActivity, "Error al confirmar la reserva: ${e.message}", Toast.LENGTH_LONG).show()
             }
         }
     }
