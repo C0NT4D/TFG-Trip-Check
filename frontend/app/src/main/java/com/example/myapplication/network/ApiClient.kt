@@ -177,14 +177,14 @@ interface TravelpayoutsService {
 interface BookingService {
     @GET("api/v1/hotels/searchDestination")
     suspend fun searchDestination(
-        @Header("X-RapidAPI-Key") apiKey: String = "8404514a34msh04218d7bb88bc8ap1abef8jsn9dce6744ae9d",
+        @Header("X-RapidAPI-Key") apiKey: String = "442a55ce04msha6515ba2887d41ap1bf203jsn11dc4c1f0b68",
         @Header("X-RapidAPI-Host") apiHost: String = "booking-com15.p.rapidapi.com",
         @Query("query") cityName: String
     ): BookingSearchResponse
 
     @GET("api/v1/hotels/searchHotels")
     suspend fun searchHotels(
-        @Header("X-RapidAPI-Key") apiKey: String = "8404514a34msh04218d7bb88bc8ap1abef8jsn9dce6744ae9d",
+        @Header("X-RapidAPI-Key") apiKey: String = "442a55ce04msha6515ba2887d41ap1bf203jsn11dc4c1f0b68",
         @Header("X-RapidAPI-Host") apiHost: String = "booking-com15.p.rapidapi.com",
         @Query("dest_id") destId: String,
         @Query("search_type") searchType: String,
